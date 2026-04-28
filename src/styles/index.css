@@ -1,0 +1,29 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+html { scroll-behavior: smooth; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #ffffff; }
+::-webkit-scrollbar-thumb { background: #C8102E; }
+* { scrollbar-width: thin; scrollbar-color: #C8102E #ffffff; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes aleph-pulse-ring {
+  0% { transform: scale(1); opacity: 0.55; }
+  80% { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+.aleph-pulse-ring::before {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px;
+  background: #C8102E; animation: aleph-pulse-ring 2.4s ease-out infinite;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
