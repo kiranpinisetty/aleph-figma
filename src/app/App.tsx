@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Menu,
@@ -24,7 +24,6 @@ import {
 import { ServicesPage } from "./components/services-page";
 import { ClubCricketPage } from "./components/club-cricket-page";
 import { ContactPage } from "./components/contact-page";
-import { LiveMatchWidget } from "./components/live-match-widget";
 import { Reveal } from "./components/reveal";
 
 import logoUrl from "../imports/aleph-logo.png";
@@ -123,6 +122,13 @@ function LogoLockup({ onClick, hideTextOnMobile = true, scale = 1 }: { onClick?:
 
 function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => void }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const links: { label: string; route?: Route }[] = [
     { label: "HOME", route: "home" },
     { label: "SERVICES", route: "services" },
@@ -137,8 +143,18 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
     setOpen(false);
   };
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm" style={{ background: "rgba(14,14,14,0.9)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300"
+      style={{
+        background: scrolled ? "rgba(14,14,14,0.92)" : "rgba(14,14,14,0.55)",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0.0)",
+        boxShadow: scrolled ? "0 8px 24px rgba(0,0,0,0.25)" : "none",
+      }}
+    >
+      <div
+        className="max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300"
+        style={{ height: scrolled ? 60 : 76 }}
+      >
         <LogoLockup onClick={() => go("home")} />
         <div className="hidden md:flex items-center gap-10">
           {links.map((l) => {
@@ -154,9 +170,16 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
                   fontSize: "13px",
                   color: isActive ? RED : undefined,
                 }}
-                className={`uppercase ${isActive ? "" : "text-white/80 hover:text-white"}`}
+                className={`relative uppercase transition-colors duration-200 ${isActive ? "" : "text-white/75 hover:text-white"}`}
               >
                 {l.label}
+                <span
+                  className="absolute left-0 -bottom-1 h-[2px] transition-all duration-300"
+                  style={{
+                    background: RED,
+                    width: isActive ? "100%" : "0%",
+                  }}
+                />
               </button>
             );
           })}
@@ -296,7 +319,11 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
             ["8+", "Years of Service"],
             ["100%", "Quality Promise"],
           ].map(([n, l]) => (
-            <div key={l} style={{ borderLeft: `3px solid ${RED}` }} className="pl-4">
+            <div
+              key={l}
+              style={{ borderLeft: `3px solid ${RED}` }}
+              className="pl-4 transition-all duration-300 hover:translate-x-1 hover:border-l-[5px]"
+            >
               <div style={{ ...condensed, fontWeight: 900, fontSize: "40px", lineHeight: 1 }} className="text-white drop-shadow-md">
                 {n}
               </div>
@@ -332,6 +359,83 @@ function Marquee() {
       </div>
       <style>{`@keyframes marquee { from { transform: translateX(0);} to { transform: translateX(-50%);} }`}</style>
     </div>
+  );
+}
+
+function WhyChooseUs() {
+  const pillars = [
+    {
+      icon: ShieldCheck,
+      title: "Pro-Level Equipment",
+      desc: "Gear trusted by serious players — every bat, pad and ball hand-picked to match real on-pitch standards.",
+    },
+    {
+      icon: Shirt,
+      title: "Custom Team Kits",
+      desc: "Design your own identity. Sublimation, embroidery and tailored fits that turn your squad into a brand.",
+    },
+    {
+      icon: Zap,
+      title: "Fast Delivery",
+      desc: "Tournament around the corner? We move fast — express turnarounds and on-time delivery, every order.",
+    },
+    {
+      icon: MessageSquare,
+      title: "Expert Advice",
+      desc: "We're players first, sellers second. Get honest guidance on bats, gear and kit from people who actually play.",
+    },
+  ];
+  return (
+    <section className="bg-white py-24 md:py-32 relative overflow-hidden">
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage:
+            "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.7%22 numOctaves=%222%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')",
+        }}
+      />
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <Reveal className="max-w-3xl">
+          <Eyebrow>Why Choose Us</Eyebrow>
+          <SectionHeading>Why Athletes Choose Us</SectionHeading>
+          <p
+            style={{ ...body, fontSize: "16px", lineHeight: 1.6, color: "#6B6B6B" }}
+            className="mt-6"
+          >
+            Built for clubs, tournaments and athletes who refuse to compromise — here's what sets every Aleph order apart.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 mt-16" style={{ border: "1px solid #E3E1DD" }}>
+          {pillars.map(({ icon: Icon, title, desc }, i) => (
+            <Reveal key={title} delay={i * 0.1} className="h-full">
+              <div
+                className="group relative p-8 h-full bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10"
+                style={{
+                  borderTop: `4px solid ${RED}`,
+                  borderRight: i < pillars.length - 1 ? "1px solid #E3E1DD" : undefined,
+                }}
+              >
+                <div
+                  style={{ ...condensed, fontWeight: 900, fontSize: "48px", lineHeight: 1, color: "#EFEDE8" }}
+                  className="absolute top-4 right-5 transition-colors duration-300 group-hover:text-[#F4D9DE]"
+                >
+                  0{i + 1}
+                </div>
+                <div className="w-14 h-14 flex items-center justify-center bg-[#F6F5F3] mb-6 transition-colors duration-300 group-hover:bg-[#C8102E]">
+                  <Icon className="text-[#C8102E] group-hover:text-white transition-colors duration-300" size={26} strokeWidth={1.8} />
+                </div>
+                <h3 style={{ ...body, fontWeight: 500, fontSize: "16px" }} className="uppercase">
+                  {title}
+                </h3>
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-3">
+                  {desc}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -833,24 +937,17 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
           {/* [FIX 6] Footer bottom bar: 13px / #999, Svestarn logo placed inline beside text */}
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
             <span style={{ ...body, fontSize: "13px", color: "#999999" }}>
-              © 2026 Aleph Sports. | 
+              © 2026 Aleph Sports. | Powered By{" "}
+              <a href="https://svestarn.com/" target="_blank" rel="noreferrer" className="text-white/70 hover:text-white underline transition-colors">
+                Svestarn IT Solutions
+              </a>
             </span>
-            {/* [FIX 6] Powered By text + logo share the same link */}
-            <a
-              href="https://svestran.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="aleph-btn inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-            >
-              <img
-                src={svestarnLogo}
-                alt="Svestarn IT Solutions"
-                className="h-5 w-auto object-contain"
-              />
-              <span style={{ ...body, fontSize: "13px" }} className="underline">
-                Powered By Svestarn IT Solutions
-              </span>
-            </a>
+            {/* [FIX 6] Svestarn logo beside "Powered By" text */}
+            <img
+              src={svestarnLogo}
+              alt="Svestarn IT Solutions"
+              className="h-6 w-auto opacity-90 hover:opacity-100 transition-opacity object-contain"
+            />
           </div>
           <span
             style={{ ...condensed, fontWeight: 800, letterSpacing: "0.2em", fontSize: "13px", color: RED }}
@@ -881,7 +978,7 @@ export default function App() {
             <>
               <Hero setRoute={setRoute} />
               <Marquee />
-              <LiveMatchWidget />
+              <WhyChooseUs />
               <Services />
               <Jerseys />
               <ClubBanner setRoute={setRoute} />
