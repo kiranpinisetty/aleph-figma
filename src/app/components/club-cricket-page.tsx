@@ -146,7 +146,7 @@ function Hero() {
         <div className="flex flex-wrap gap-4 mt-10">
           <button
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-            className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+            className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             Join the Roster <ArrowRight size={16} />
           </button>
@@ -158,7 +158,7 @@ function Hero() {
               letterSpacing: "0.12em",
               fontSize: "14px",
             }}
-            className="text-white uppercase px-7 py-4 hover:bg-white/5"
+            className="aleph-btn aleph-btn-fill-red text-white uppercase px-7 py-4"
           >
             View Match Schedule
           </button>
@@ -240,7 +240,7 @@ function About() {
             </p>
             <button
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-              className="mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+              className="aleph-btn aleph-btn-darken-red mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2"
             >
               Join the Club <ArrowRight size={16} />
             </button>
@@ -893,7 +893,7 @@ function RosterForm() {
             <button
               type="submit"
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "14px" }}
-              className="w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2 hover:opacity-90"
+              className="aleph-btn aleph-btn-darken-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
             >
               Join the Roster <ArrowRight size={16} />
             </button>
@@ -920,7 +920,7 @@ function InstagramCTA() {
         </p>
         <button
           style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-          className="mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+          className="aleph-btn aleph-btn-darken-red mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2"
         >
           Follow @Aleph_Sports <ArrowRight size={16} />
         </button>
@@ -955,7 +955,7 @@ function FinalBanner() {
         <div className="flex flex-wrap gap-4 justify-center mt-10">
           <button
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-            className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+            className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             Join Now <ArrowRight size={16} />
           </button>
@@ -967,7 +967,7 @@ function FinalBanner() {
               letterSpacing: "0.12em",
               fontSize: "14px",
             }}
-            className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:bg-white/10"
+            className="aleph-btn aleph-btn-fill-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             <Phone size={14} /> Call Us: +91 9491581580
           </button>

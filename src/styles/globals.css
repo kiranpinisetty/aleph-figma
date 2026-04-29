@@ -1,0 +1,53 @@
+/* ══════════════════════════════════════════════════════════════
+   ALEPH SPORTS — Global Visual Fix Patches
+   ══════════════════════════════════════════════════════════════ */
+
+/* [FIX 1] BODY TEXT SIZE
+   Ensures all paragraph / body copy defaults to 15px with
+   line-height: 1.6. Inline style overrides still win where set. */
+p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* [FIX 7] CTA BUTTON BASE TRANSITIONS
+   Applied via the .aleph-btn class on every major CTA.
+   Provides 0.2s ease transition for bg, transform, and shadow.
+   The translateY(-1px) lift is included here so individual
+   buttons only need the class name, not duplicated inline styles. */
+.aleph-btn {
+  transition: background-color 0.2s ease, color 0.2s ease,
+              transform 0.2s ease, box-shadow 0.2s ease,
+              opacity 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+.aleph-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* [FIX 7b] Solid-red fill on hover for outline/ghost buttons.
+   Add class "aleph-btn-fill-red" alongside .aleph-btn for
+   any outline button that should fill to red on hover. */
+.aleph-btn-fill-red:hover {
+  background-color: #C8102E !important;
+  color: #ffffff !important;
+  border-color: #C8102E !important;
+}
+
+/* [FIX 7c] Darken red fill on hover for already-red buttons. */
+.aleph-btn-darken-red:hover {
+  background-color: #a00c24 !important;
+}
+
+/* [FIX 8] SOCIAL CARDS EQUAL HEIGHT
+   The grid parent gets this class so all child cards
+   stretch to the tallest card's height in each row. */
+.aleph-social-grid {
+  align-items: stretch;
+}
+.aleph-social-grid > a,
+.aleph-social-grid > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

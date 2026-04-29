@@ -221,8 +221,9 @@ function MainContact() {
           <button
             type="submit"
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "14px" }}
-            className="w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2 hover:opacity-90"
+            className="aleph-btn aleph-btn-darken-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
           >
+            {/* [FIX 7] CTA: .aleph-btn smooth 0.2s ease + darken on hover */}
             Send Message <ArrowRight size={16} />
           </button>
           <div style={{ ...body, fontSize: "13px", color: "#6B6B6B" }} className="text-center">
@@ -297,8 +298,9 @@ function MainContact() {
               target="_blank"
               rel="noreferrer"
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "14px" }}
-              className="w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2 hover:opacity-90"
+              className="aleph-btn aleph-btn-darken-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
             >
+              {/* [FIX 7] WhatsApp CTA: .aleph-btn smooth transition */}
               WhatsApp Now <ArrowRight size={16} />
             </a>
             <a
@@ -310,8 +312,9 @@ function MainContact() {
                 letterSpacing: "0.15em",
                 fontSize: "14px",
               }}
-              className="w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2 hover:bg-white/10"
+              className="aleph-btn aleph-btn-fill-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
             >
+              {/* [FIX 7] Call outline CTA: .aleph-btn + fill-red hover */}
               Call Now <ArrowRight size={16} />
             </a>
           </div>
@@ -412,9 +415,11 @@ function SocialCard({
         border: dark ? undefined : "1px solid #E3E1DD",
         borderTop: `3px solid ${RED}`,
       }}
-      className="p-8 flex flex-col hover:-translate-y-1 transition-transform relative hover:shadow-xl"
+      className="aleph-btn p-8 flex flex-col h-full hover:-translate-y-1 relative hover:shadow-xl"
     >
-      <Icon style={{ color: RED }} size={48} strokeWidth={1.6} />
+      {/* [FIX 7] Social card: .aleph-btn smooth 0.2s hover + [FIX 8] flex-col h-full for equal height */}
+      {/* [FIX 8] Social card icon standardized to 24px across all cards */}
+      <Icon style={{ color: RED }} size={24} strokeWidth={1.8} />
       <h3
         style={{ ...condensed, fontWeight: 800, fontSize: "26px", color: dark ? "#fff" : DARK }}
         className="uppercase mt-6"
@@ -462,7 +467,8 @@ function Social() {
             Match updates, new gear drops, jersey designs, and club cricket announcements — all on social.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+        {/* [FIX 8] items-stretch makes all 4 social cards equal height in each row */}
+        <div className="aleph-social-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
           <SocialCard
             Icon={Instagram}
             title="Instagram"
