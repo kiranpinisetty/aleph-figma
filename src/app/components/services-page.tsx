@@ -1,8 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import { Check, ArrowRight, Phone, Settings2 } from "lucide-react";
 import { JerseyConfigurator } from "./jersey-configurator";
 
 const CATALOGUE_URL = "https://wa.me/c/919491581580";
+const WHATSAPP_URL = "https://wa.me/919491581580";
+const PHONE_TEL = "tel:+919491581580";
+
+type Route = "home" | "services" | "club" | "contact";
+
+const TAB_TO_ID: Record<string, string> = {
+  All: "services-top",
+  "Customised Jerseys": "customised-jerseys",
+  "Bat Knocking": "bat-knocking",
+  "Cricket Gear": "cricket-gear",
+  "Product Repairs": "product-repairs",
+  "Tournament Kits": "tournament-kits",
+  
+};
+const ID_TO_TAB: Record<string, string> = Object.fromEntries(
+  Object.entries(TAB_TO_ID).map(([k, v]) => [v, k]),
+);
 
 const RED = "#C8102E";
 const DARK = "#0E0E0E";
@@ -12,7 +30,15 @@ const condensed = { fontFamily: "'Barlow Condensed', sans-serif" };
 const body = { fontFamily: "'Barlow', sans-serif" };
 
 const IMG_JERSEY =
-  "https://images.unsplash.com/photo-1761751844072-120967509161?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+  "https://images.unsplash.com/photo-1707108471246-fb36c4d78d37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+const IMG_JERSEY_2 =
+  "https://images.unsplash.com/photo-1580831772345-687cfb1841f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_JERSEY_3 =
+  "https://images.unsplash.com/photo-1768492263368-46acc6804f14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_JERSEY_4 =
+  "https://images.unsplash.com/photo-1774600958486-9ca9b2fdea10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_JERSEY_5 =
+  "https://images.unsplash.com/photo-1659081450592-99fc16c56b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_BAT =
   "https://images.unsplash.com/photo-1603722039047-bc9997bfa963?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 const IMG_GLOVE_1 =
@@ -28,7 +54,16 @@ const IMG_GEAR_2 =
 const IMG_ACTION =
   "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 
-function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+const IMG_REPAIR_1 =
+  "https://images.unsplash.com/photo-1743342398244-c8c5a307d290?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_REPAIR_2 =
+  "https://images.unsplash.com/photo-1752497331166-3182a2c94bbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_REPAIR_3 =
+  "https://images.unsplash.com/photo-1579178937321-3ac1437a28ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_REPAIR_4 =
+  "https://images.unsplash.com/photo-1540345701062-3676274135b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+
+function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
     <div
       style={{
@@ -45,7 +80,7 @@ function Eyebrow({ children, light = false }: { children: React.ReactNode; light
   );
 }
 
-function BigHeading({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+function BigHeading({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
     <h2
       style={{
@@ -132,17 +167,24 @@ function PageHero() {
   );
 }
 
-function TabsStrip({ active, setActive }: { active: string; setActive: (s: string) => void }) {
-  const tabs = ["All", "Customised Jerseys", "Cricket Gear", "Product Repairs", "Tournament Kits", "Bat Knocking"];
+function TabsStrip({ active, onSelect }: { active: string; onSelect: (t: string) => void }) {
+  const tabs = [
+    "All",
+    "Customised Jerseys",
+    "Bat Knocking",
+    "Cricket Gear",
+    "Product Repairs",
+    "Tournament Kits",
+  ];
   return (
-    <div className="sticky top-16 z-40 bg-white border-b border-[#E3E1DD]">
+    <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E3E1DD] shadow-[0_1px_0_rgba(0,0,0,0.02)]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
         {tabs.map((t) => {
           const isActive = active === t;
           return (
             <button
               key={t}
-              onClick={() => setActive(t)}
+              onClick={() => onSelect(t)}
               style={{
                 ...condensed,
                 fontWeight: 800,
@@ -151,8 +193,9 @@ function TabsStrip({ active, setActive }: { active: string; setActive: (s: strin
                 background: isActive ? RED : "#fff",
                 color: isActive ? "#fff" : "#111",
                 border: isActive ? `1px solid ${RED}` : "1px solid #E3E1DD",
+                boxShadow: isActive ? "0 4px 14px rgba(200,16,46,0.25)" : undefined,
               }}
-              className="uppercase px-5 py-2.5 whitespace-nowrap hover:border-[#C8102E] transition-colors"
+              className="uppercase px-5 py-2.5 whitespace-nowrap hover:border-[#C8102E] hover:text-[#C8102E] transition-all duration-200"
             >
               {t}
             </button>
@@ -204,7 +247,37 @@ function FeatureRow({ title, desc }: { title: string; desc: string }) {
   );
 }
 
-function Service01({ onCustomise }: { onCustomise: () => void }) {
+function Service01({ onCustomise, onContact }: { onCustomise: () => void; onContact: () => void }) {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const jerseyGallery = [
+    {
+      img: IMG_JERSEY,
+      label: "Sublimation Print",
+      caption: "Full-colour, all-over print kits",
+    },
+    {
+      img: IMG_JERSEY_2,
+      label: "Classic Whites",
+      caption: "Traditional match-day whites",
+    },
+    {
+      img: IMG_JERSEY_3,
+      label: "T20 / ODI Coloured Kits",
+      caption: "Bold colours for limited-overs cricket",
+    },
+    {
+      img: IMG_JERSEY_4,
+      label: "Stadium Ready",
+      caption: "Kits worn at elite grounds",
+    },
+    {
+      img: IMG_JERSEY_5,
+      label: "Champion Kits",
+      caption: "Trophy-winning team designs",
+    },
+  ];
+
   return (
     <section id="customised-jerseys" className="bg-white py-24 md:py-32 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -237,9 +310,11 @@ function Service01({ onCustomise }: { onCustomise: () => void }) {
               />
             </div>
             <div className="mt-10 flex flex-wrap gap-3">
+              {/* [FIX 7] Get a Jersey Quote CTA: .aleph-btn smooth transition */}
               <button
+                onClick={onContact}
                 style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-                className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+                className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
               >
                 Get a Jersey Quote <ArrowRight size={16} />
               </button>
@@ -252,7 +327,7 @@ function Service01({ onCustomise }: { onCustomise: () => void }) {
                   letterSpacing: "0.12em",
                   fontSize: "14px",
                 }}
-                className="uppercase px-7 py-4 inline-flex items-center gap-2 hover:bg-[#C8102E] hover:!text-white text-[#C8102E] transition-colors"
+                className="aleph-btn aleph-btn-fill-red uppercase px-7 py-4 inline-flex items-center gap-2 text-[#C8102E]"
               >
                 <Settings2 size={16} /> Customise Your Jersey <ArrowRight size={16} />
               </button>
@@ -267,23 +342,107 @@ function Service01({ onCustomise }: { onCustomise: () => void }) {
               Or browse jersey styles on WhatsApp Catalogue →
             </a>
           </div>
+
+          {/* RIGHT SIDE — Jersey Gallery */}
           <div>
-            <div className="relative">
-              <img src={IMG_JERSEY} alt="Customised cricket jersey" className="w-full h-[520px] object-cover" />
+            {/* Main featured image */}
+            <div className="relative overflow-hidden" style={{ height: "380px" }}>
+              {jerseyGallery.map((item, idx) => (
+                <img
+                  key={idx}
+                  src={item.img}
+                  alt={item.label}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                  style={{ opacity: activeSlide === idx ? 1 : 0 }}
+                />
+              ))}
+              {/* Overlay gradient */}
               <div
-                style={{
-                  background: RED,
-                  ...condensed,
-                  fontWeight: 800,
-                  letterSpacing: "0.15em",
-                  fontSize: "11px",
-                }}
-                className="absolute bottom-5 left-5 text-white uppercase px-4 py-2"
-              >
-                ★ Match Ready
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: "linear-gradient(180deg, transparent 50%, rgba(14,14,14,0.72) 100%)" }}
+              />
+              {/* Label */}
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                <div>
+                  <div
+                    style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "11px" }}
+                    className="inline-block text-white uppercase px-3 py-1 mb-2"
+                  >
+                    {jerseyGallery[activeSlide].label}
+                  </div>
+                  <p
+                    style={{ ...condensed, fontWeight: 700, fontSize: "15px", color: "rgba(255,255,255,0.85)" }}
+                    className="uppercase"
+                  >
+                    {jerseyGallery[activeSlide].caption}
+                  </p>
+                </div>
+                {/* Nav arrows */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setActiveSlide((p) => (p === 0 ? jerseyGallery.length - 1 : p - 1))}
+                    style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)" }}
+                    className="w-9 h-9 flex items-center justify-center text-white hover:bg-[#C8102E] transition-colors"
+                    aria-label="Previous jersey"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={() => setActiveSlide((p) => (p + 1) % jerseyGallery.length)}
+                    style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)" }}
+                    className="w-9 h-9 flex items-center justify-center text-white hover:bg-[#C8102E] transition-colors"
+                    aria-label="Next jersey"
+                  >
+                    ›
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-3 mt-6" style={{ border: "1px solid #E3E1DD" }}>
+
+            {/* Thumbnail strip — 4 small thumbnails */}
+            <div className="grid grid-cols-4 gap-1 mt-1">
+              {jerseyGallery.slice(1).map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSlide(idx + 1)}
+                  className="relative overflow-hidden"
+                  style={{
+                    height: "96px",
+                    outline: activeSlide === idx + 1 ? `2px solid ${RED}` : "2px solid transparent",
+                    outlineOffset: "0px",
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        activeSlide === idx + 1
+                          ? "rgba(200,16,46,0.18)"
+                          : "rgba(14,14,14,0.35)",
+                    }}
+                  />
+                  <div
+                    style={{
+                      ...condensed,
+                      fontWeight: 700,
+                      fontSize: "9px",
+                      letterSpacing: "0.1em",
+                    }}
+                    className="absolute bottom-1.5 left-0 right-0 text-center text-white uppercase"
+                  >
+                    {item.label}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Stats bar */}
+            <div className="grid grid-cols-3 mt-3" style={{ border: "1px solid #E3E1DD" }}>
               {[
                 ["500+", "Kits Delivered"],
                 ["7-Day", "Turnaround"],
@@ -312,6 +471,29 @@ function Service01({ onCustomise }: { onCustomise: () => void }) {
                 </div>
               ))}
             </div>
+
+            {/* Dot indicators */}
+            <div className="flex items-center gap-2 mt-4">
+              {jerseyGallery.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSlide(idx)}
+                  style={{
+                    width: activeSlide === idx ? "28px" : "8px",
+                    height: "8px",
+                    background: activeSlide === idx ? RED : "#D1CFC9",
+                    transition: "all 0.3s ease",
+                  }}
+                  aria-label={`Go to jersey ${idx + 1}`}
+                />
+              ))}
+              <span
+                style={{ ...condensed, fontWeight: 700, fontSize: "11px", letterSpacing: "0.15em", color: "#9B9B9B" }}
+                className="uppercase ml-2"
+              >
+                {activeSlide + 1} / {jerseyGallery.length}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -319,7 +501,7 @@ function Service01({ onCustomise }: { onCustomise: () => void }) {
   );
 }
 
-function Service02() {
+function Service02({ onContact }: { onContact: () => void }) {
   const steps = [
     { n: "01", t: "Inspection", d: "We assess the bat's grade, moisture, and grain quality" },
     { n: "02", t: "Machine Knocking", d: "Systematic mallet work to compress surface fibres" },
@@ -402,6 +584,7 @@ function Service02() {
               </div>
             </div>
             <button
+              onClick={onContact}
               style={{
                 border: `1px solid ${RED}`,
                 ...condensed,
@@ -420,7 +603,7 @@ function Service02() {
   );
 }
 
-function Service03() {
+function Service03({ onContact }: { onContact: () => void }) {
   const cards = [
     { img: IMG_BAT, cat: "Willow", t: "English Willow Bats", d: "Grade A & B match bats, knocked-in and ready." },
     { img: IMG_HELMET, cat: "Safety", t: "Protective Pads & Helmets", d: "Certified pads and helmets for every age and grade." },
@@ -434,7 +617,8 @@ function Service03() {
       <div className="max-w-7xl mx-auto px-6 relative">
         <SectionNumber n="03" />
         <div className="relative max-w-3xl">
-          <Eyebrow>Equipment</Eyebrow>
+          {/* [FIX 3] Eyebrow "Equipment" → "Our Offering" — more descriptive */}
+          <Eyebrow>Our Offering</Eyebrow>
           <BigHeading>Pro Cricket Gear</BigHeading>
           <p
             style={{ ...body, fontSize: "17px", lineHeight: 1.7, color: "#6B6B6B" }}
@@ -448,32 +632,42 @@ function Service03() {
           {cards.map((c) => (
             <div
               key={c.t}
-              style={{ border: "1px solid #E3E1DD" }}
+              style={{
+                /* [FIX 5] 4px top border in brand red on all gear product cards */
+                borderTop: `4px solid ${RED}`,
+                border: "1px solid #E3E1DD",
+                borderTopWidth: "4px",
+                borderTopColor: RED,
+              }}
               className="bg-white group hover:-translate-y-1 transition-transform"
             >
               <div className="h-52 overflow-hidden">
                 <img src={c.img} alt={c.t} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <div className="p-6">
+              {/* [FIX 5] Internal card padding increased to p-5 (20px) */}
+              <div className="p-5">
                 <div
                   style={{ ...condensed, fontWeight: 700, letterSpacing: "0.2em", fontSize: "11px", color: RED }}
                   className="uppercase"
                 >
                   {c.cat}
                 </div>
-                <h3 style={{ ...condensed, fontWeight: 800, fontSize: "24px" }} className="uppercase mt-2">
+                {/* [FIX 5] Product name: font-size 16px, font-weight 500 (body font) */}
+                <h3 style={{ ...body, fontWeight: 500, fontSize: "16px" }} className="uppercase mt-2">
                   {c.t}
                 </h3>
-                <p style={{ ...body, fontSize: "14px", lineHeight: 1.65, color: "#6B6B6B" }} className="mt-2">
+                {/* [FIX 1] Card body text: 15px / line-height 1.6 */}
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-2">
                   {c.d}
                 </p>
-                <a
-                  href="#"
+                {/* [FIX 7] Enquire link: .aleph-btn smooth transition */}
+                <button
+                  onClick={onContact}
                   style={{ ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "13px", color: RED }}
-                  className="uppercase mt-5 inline-flex items-center gap-2 border-b border-current"
+                  className="aleph-btn uppercase mt-5 inline-flex items-center gap-2 border-b border-current"
                 >
                   Enquire Now <ArrowRight size={14} />
-                </a>
+                </button>
               </div>
             </div>
           ))}
@@ -489,7 +683,8 @@ function Service03() {
             </span>{" "}
             — we'll source it for you.
           </p>
-          <button
+          <a
+            href={PHONE_TEL}
             style={{
               border: "1px solid rgba(255,255,255,0.7)",
               ...condensed,
@@ -500,14 +695,14 @@ function Service03() {
             className="text-white uppercase px-7 py-3 inline-flex items-center gap-2 hover:bg-white hover:text-[#0E0E0E] transition-colors shrink-0"
           >
             <Phone size={14} /> Call Now
-          </button>
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-function Service04() {
+function Service04({ onContact }: { onContact: () => void }) {
   const repairs = [
     "Batting Glove Repair",
     "Pad Stitching & Foam Replacement",
@@ -516,7 +711,7 @@ function Service04() {
     "Bat Handle Replacement",
     "Grip Fitting & Toe Guard",
   ];
-  const collage = [IMG_GLOVE_1, IMG_GLOVE_2, IMG_GEAR, IMG_GEAR_2];
+  const collage = [IMG_REPAIR_1, IMG_REPAIR_2, IMG_REPAIR_3, IMG_REPAIR_4];
   return (
     <section id="product-repairs" style={{ background: OFF }} className="py-24 md:py-32 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -565,6 +760,7 @@ function Service04() {
               ))}
             </div>
             <button
+              onClick={onContact}
               style={{
                 background: RED,
                 ...condensed,
@@ -583,7 +779,7 @@ function Service04() {
   );
 }
 
-function Service05() {
+function Service05({ onContact }: { onContact: () => void }) {
   const panels = [
     { t: "Full Kit Bundle", d: "Jersey + shorts + socks + cap, coordinated and branded" },
     { t: "Custom Numbering", d: "Every player gets the right size and number, first time" },
@@ -646,6 +842,7 @@ function Service05() {
           </div>
         </div>
         <button
+          onClick={onContact}
           style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
           className="mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
         >
@@ -687,7 +884,7 @@ function TrustBar() {
   );
 }
 
-function FinalCTA() {
+function FinalCTA({ onContact }: { onContact: () => void }) {
   return (
     <section className="bg-white py-24 md:py-32">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -700,13 +897,16 @@ function FinalCTA() {
           Walk into our store in Vijayawada or drop an enquiry — we'll get back within 24 hours.
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-10">
+          {/* [FIX 7] Start Enquiry CTA: .aleph-btn transition */}
           <button
+            onClick={onContact}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-            className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
+            className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             Start Enquiry <ArrowRight size={16} />
           </button>
-          <button
+          <a
+            href={PHONE_TEL}
             style={{
               border: `1px solid ${DARK}`,
               ...condensed,
@@ -714,10 +914,10 @@ function FinalCTA() {
               letterSpacing: "0.12em",
               fontSize: "14px",
             }}
-            className="uppercase px-7 py-4 inline-flex items-center gap-2 text-[#0E0E0E] hover:bg-[#0E0E0E] hover:!text-white transition-colors"
+            className="aleph-btn aleph-btn-fill-red uppercase px-7 py-4 inline-flex items-center gap-2 text-[#0E0E0E] hover:!text-white"
           >
             <Phone size={14} /> Call +91 9491581580
-          </button>
+          </a>
         </div>
         <div
           style={{ ...body, fontSize: "13px", color: "#6B6B6B" }}
@@ -732,47 +932,87 @@ function FinalCTA() {
   );
 }
 
-export function ServicesPage() {
+export function ServicesPage({ setRoute }: { setRoute?: (r: Route) => void }) {
   const [active, setActive] = useState("All");
   const [configOpen, setConfigOpen] = useState(false);
   const openConfig = () => setConfigOpen(true);
+  const isProgrammaticScroll = useRef(false);
+
+  const goContact = () => {
+    if (setRoute) {
+      setRoute("contact");
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }
+  };
 
   const handleSubmit = (summary: string) => {
     setConfigOpen(false);
     const msg = `Jersey Order Configuration:\n${summary}`;
+    if (setRoute) {
+      setRoute("contact");
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }
     setTimeout(() => {
       const subject = document.querySelector<HTMLSelectElement>("#enquiry-subject");
       const message = document.querySelector<HTMLTextAreaElement>("#enquiry-message");
       if (subject) subject.value = "Jersey Order";
       if (message) message.value = msg;
-      const form = document.querySelector("#final-cta") || document.querySelector("footer");
-      form?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
+    }, 100);
   };
 
-  const sections: Record<string, JSX.Element> = {
-    All: (
-      <>
-        <Service01 onCustomise={openConfig} />
-        <Service02 />
-        <Service03 />
-        <Service04 />
-        <Service05 />
-      </>
-    ),
-    "Customised Jerseys": <Service01 onCustomise={openConfig} />,
-    "Bat Knocking": <Service02 />,
-    "Cricket Gear": <Service03 />,
-    "Product Repairs": <Service04 />,
-    "Tournament Kits": <Service05 />,
+  const onTabSelect = (t: string) => {
+    setActive(t);
+    const id = TAB_TO_ID[t];
+    const el = document.getElementById(id);
+    if (el) {
+      isProgrammaticScroll.current = true;
+      const top = el.getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top, behavior: "smooth" });
+      window.setTimeout(() => {
+        isProgrammaticScroll.current = false;
+      }, 800);
+    }
   };
+
+  // Scroll-spy: update active tab based on which section is in view.
+  useEffect(() => {
+    const ids = ["customised-jerseys", "bat-knocking", "cricket-gear", "product-repairs", "tournament-kits"];
+    const onScroll = () => {
+      if (isProgrammaticScroll.current) return;
+      const probe = window.innerHeight * 0.35;
+      let current: string = "All";
+      if (window.scrollY < 200) {
+        current = "All";
+      } else {
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= probe && rect.bottom > probe) {
+            current = ID_TO_TAB[id];
+            break;
+          }
+        }
+      }
+      setActive((prev) => (prev === current ? prev : current));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
+      <div id="services-top" />
       <PageHero />
-      <TabsStrip active={active} setActive={setActive} />
-      {sections[active]}
+      <TabsStrip active={active} onSelect={onTabSelect} />
+      <Service01 onCustomise={openConfig} onContact={goContact} />
+      <Service02 onContact={goContact} />
+      <Service03 onContact={goContact} />
+      <Service04 onContact={goContact} />
+      <Service05 onContact={goContact} />
       <TrustBar />
-      <FinalCTA />
+      <FinalCTA onContact={goContact} />
       <JerseyConfigurator open={configOpen} onClose={() => setConfigOpen(false)} onSubmit={handleSubmit} />
     </>
   );

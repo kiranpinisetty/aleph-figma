@@ -27,7 +27,9 @@ import { ContactPage } from "./components/contact-page";
 import { LiveMatchWidget } from "./components/live-match-widget";
 import { Reveal } from "./components/reveal";
 
-import logoUrl from "../imports/apleph-logo.png";
+import logoUrl from "../imports/aleph-logo.png";
+/* [FIX 6] Svestarn logo for footer 4th column / bottom bar */
+import svestarnLogo from "../imports/svestarn-logo.png";
 
 const CATALOGUE_URL = "https://wa.me/c/919491581580";
 const WHATSAPP_URL = "https://wa.me/919491581580";
@@ -195,7 +197,7 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
               {l.label}
             </button>
           ))}
-          <button style={{ background: RED, ...condensed, fontWeight: 800 }} className="text-white uppercase py-3">
+          <button onClick={() => go("contact")} style={{ background: RED, ...condensed, fontWeight: 800 }} className="text-white uppercase py-3">
             Contact Us
           </button>
         </div>
@@ -248,16 +250,18 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
           </Reveal>
           <Reveal delay={0.1}>
             <div className="flex flex-wrap gap-4 mt-10">
+              {/* [FIX 7] Red CTA: .aleph-btn for 0.2s ease transitions + darken-on-hover */}
               <button
                 onClick={() => {
                   setRoute("contact");
                   window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
                 }}
                 style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
-                className="text-white uppercase px-7 py-4 hover:bg-[#a00c24] transition-all hover:shadow-[0_0_20px_rgba(200,16,46,0.4)] hover:-translate-y-0.5 inline-flex items-center gap-2 group"
+                className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 hover:shadow-[0_0_20px_rgba(200,16,46,0.4)] inline-flex items-center gap-2 group"
               >
                 Start Enquiry <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
+              {/* [FIX 7] Outline CTA: .aleph-btn transitions + fill-red hover */}
               <button
                 onClick={() => {
                   setRoute("services");
@@ -270,7 +274,7 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
                   fontSize: "14px",
                   border: "1px solid rgba(255,255,255,0.4)",
                 }}
-                className="text-white uppercase px-7 py-4 hover:bg-white/10 hover:border-white transition-all hover:-translate-y-0.5"
+                className="aleph-btn aleph-btn-fill-red text-white uppercase px-7 py-4 hover:border-[#C8102E]"
               >
                 Explore Services
               </button>
@@ -341,9 +345,11 @@ function Services() {
     { icon: Zap, title: "Fast Turnaround", desc: "Express orders, on-time delivery and dedicated support for last-minute team needs." },
   ];
   return (
-    <section className="bg-white py-24 md:py-32">
+    <section style={{ background: OFF }} className="py-24 md:py-32">
+      {/* [FIX 4] Background changed from bg-white → OFF to break consecutive white sections after LiveMatchWidget */}
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
+          {/* [FIX 3] Eyebrow "What We Do" is clear — kept as-is */}
           <Eyebrow>What We Do</Eyebrow>
           <SectionHeading>Our Services</SectionHeading>
         </Reveal>
@@ -351,26 +357,27 @@ function Services() {
           {items.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 0.1} className="h-full">
               <div
-                className="group p-10 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10 bg-white"
+                className="group p-8 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10 bg-white"
                 style={{
+                  /* [FIX 5] 4px top border in brand red on all service cards */
+                  borderTop: `4px solid ${RED}`,
                   borderRight: i % 3 !== 2 ? "1px solid #E3E1DD" : undefined,
                   borderBottom: i < 3 ? "1px solid #E3E1DD" : undefined,
                 }}
               >
-                <div
-                  className="absolute left-0 top-0 bottom-0 w-[3px] opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: RED }}
-                />
+                {/* [FIX 5] Internal padding increased to p-8 (32px) */}
                 <div className="w-12 h-12 flex items-center justify-center bg-[#F6F5F3] mb-6 group-hover:bg-[#C8102E] transition-colors duration-300">
                   <Icon className="text-[#C8102E] group-hover:text-white transition-colors duration-300" size={24} strokeWidth={1.8} />
                 </div>
+                {/* [FIX 5] Product/service name: font-size 16px, weight 500 (body font) */}
                 <h3
-                  style={{ ...condensed, fontWeight: 800, fontSize: "26px", letterSpacing: "0.01em" }}
-                  className="uppercase"
+                  style={{ ...body, fontWeight: 500, fontSize: "16px" }}
+                  className="uppercase mt-1"
                 >
                   {title}
                 </h3>
-                <p style={{ ...body, fontSize: "15px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-3">
+                {/* [FIX 1] Body text: 15px / line-height 1.6 */}
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-3">
                   {desc}
                 </p>
               </div>
@@ -408,7 +415,8 @@ function Jerseys() {
         <div>
           <Eyebrow>Custom Jerseys</Eyebrow>
           <SectionHeading>Wear Your Team's Colours</SectionHeading>
-          <p style={{ ...body, fontSize: "17px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-6">
+          {/* [FIX 1] Body text: 16px / line-height 1.6 */}
+          <p style={{ ...body, fontSize: "16px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-6">
             From design concept to final stitch — we craft jerseys that look pro and feel pro. Sublimation, embroidery,
             and performance fabrics built for the rigours of club and tournament cricket.
           </p>
@@ -418,15 +426,19 @@ function Jerseys() {
                 key={t}
                 className="p-6 bg-white relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:z-10"
                 style={{
+                  /* [FIX 5] 4px top border on jersey feature cards */
+                  borderTop: `4px solid ${RED}`,
                   borderRight: i % 2 === 0 ? "1px solid #E3E1DD" : undefined,
                   borderBottom: i < 2 ? "1px solid #E3E1DD" : undefined,
                 }}
               >
                 <Icon style={{ color: RED }} size={28} strokeWidth={1.8} />
-                <h4 style={{ ...condensed, fontWeight: 800, fontSize: "20px" }} className="uppercase mt-3">
+                {/* [FIX 5] Card heading: 16px / weight 500 body font */}
+                <h4 style={{ ...body, fontWeight: 500, fontSize: "16px" }} className="uppercase mt-3">
                   {t}
                 </h4>
-                <p style={{ ...body, fontSize: "14px", lineHeight: 1.65, color: "#6B6B6B" }} className="mt-2">
+                {/* [FIX 1] Card body: 15px / 1.6 */}
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-2">
                   {d}
                 </p>
               </div>
@@ -463,9 +475,11 @@ function ClubBanner({ setRoute }: { setRoute: (r: Route) => void }) {
           >
             Club Cricket Matches Every Week!
           </h2>
-          <p style={{ ...body, fontSize: "17px", lineHeight: 1.7 }} className="text-white/90 mt-6 max-w-2xl mx-auto font-medium">
+          {/* [FIX 1] Dark-bg body text: 16px / line-height 1.6 */}
+          <p style={{ ...body, fontSize: "16px", lineHeight: 1.6 }} className="text-white/90 mt-6 max-w-2xl mx-auto font-medium">
             Join Vijayawada's most active cricket community. Weekend fixtures, friendly competition, real game time.
           </p>
+          {/* [FIX 7] Outline button: .aleph-btn smooth 0.2s transitions + lift */}
           <button
             onClick={() => {
               setRoute("club");
@@ -478,7 +492,7 @@ function ClubBanner({ setRoute }: { setRoute: (r: Route) => void }) {
               letterSpacing: "0.15em",
               fontSize: "14px",
             }}
-            className="text-white uppercase px-10 py-5 mt-10 hover:bg-white hover:text-[#C8102E] transition-all hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
+            className="aleph-btn text-white uppercase px-10 py-5 mt-10 hover:bg-white hover:text-[#C8102E] hover:border-white hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
           >
             Join the Roster →
           </button>
@@ -526,21 +540,24 @@ function ProGear() {
           </Reveal>
           <div className="grid grid-rows-2 gap-6">
             <Reveal delay={0.2}>
-              <div style={{ background: DARK, borderTop: `3px solid ${RED}` }} className="p-10 h-full flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl group">
+              {/* [FIX 5] 4px top border on ProGear dark card */}
+              <div style={{ background: DARK, borderTop: `4px solid ${RED}` }} className="p-10 h-full flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl group">
                 <div>
                   <Eyebrow>Safety First</Eyebrow>
                   <h3 style={{ ...condensed, fontWeight: 900, fontSize: "40px", lineHeight: 0.9 }} className="uppercase text-white transition-colors group-hover:text-[#f4f4f4]">
                     Protective Gear
                   </h3>
                 </div>
-                <p style={{ ...body, fontSize: "15px", lineHeight: 1.7 }} className="text-white/70 mt-6">
+                {/* [FIX 1] Dark-bg body: 15px / 1.6 */}
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6 }} className="text-white/70 mt-6">
                   Helmets, pads, gloves, abdominal guards and arm guards — fully certified protection for every position
                   on the pitch.
                 </p>
               </div>
             </Reveal>
             <Reveal delay={0.3}>
-              <div style={{ background: "#fff", border: "1px solid #E3E1DD" }} className="p-10 h-full flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
+              {/* [FIX 5] 4px top border on light gear card too */}
+              <div style={{ background: "#fff", border: "1px solid #E3E1DD", borderTop: `4px solid ${RED}` }} className="p-10 h-full flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
                 <div>
                   <Eyebrow>Tournament Grade</Eyebrow>
                   <h3
@@ -550,7 +567,8 @@ function ProGear() {
                     Match Balls
                   </h3>
                 </div>
-                <p style={{ ...body, fontSize: "15px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-6">
+                {/* [FIX 1] Body: 15px / 1.6 */}
+                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-6">
                   Leather match balls and practice balls suited for every format — from club nets to weekend fixtures.
                 </p>
               </div>
@@ -573,7 +591,8 @@ function Testimonials() {
       <div className="max-w-7xl mx-auto px-6">
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div>
-            <Eyebrow>Social Proof</Eyebrow>
+            {/* [FIX 3] "Social Proof" → "Happy Clients" — clearer, less jargon */}
+            <Eyebrow>Happy Clients</Eyebrow>
             <SectionHeading>Trusted By Local Teams</SectionHeading>
           </div>
           <div className="flex items-center gap-4">
@@ -583,7 +602,9 @@ function Testimonials() {
               ))}
             </div>
             <a
-              href="#"
+              href="https://www.google.com/maps/search/Aleph+Sports+Vijayawada"
+              target="_blank"
+              rel="noreferrer"
               style={{ ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "13px", color: RED }}
               className="uppercase border-b border-current hover:text-[#a00c24] transition-colors"
             >
@@ -594,11 +615,13 @@ function Testimonials() {
         <div className="grid md:grid-cols-3 gap-6 mt-14">
           {reviews.map((r, i) => (
             <Reveal key={r.n} delay={i * 0.15}>
+              {/* [FIX 5] 4px top border on testimonial dark cards */}
               <div
-                style={{ background: DARK, borderTop: `3px solid ${RED}` }}
+                style={{ background: DARK, borderTop: `4px solid ${RED}` }}
                 className="p-8 h-full hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-300"
               >
-                <p style={{ ...body, fontStyle: "italic", fontSize: "16px", lineHeight: 1.7 }} className="text-white/80">
+                {/* [FIX 1] Dark-bg testimonial text: 15px / 1.6 */}
+                <p style={{ ...body, fontStyle: "italic", fontSize: "15px", lineHeight: 1.6 }} className="text-white/80">
                   "{r.q}"
                 </p>
                 <div className="flex items-center gap-4 mt-8">
@@ -630,9 +653,11 @@ function Contact() {
     <section className="bg-white py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14">
         <div>
-          <Eyebrow>Enquiry Desk</Eyebrow>
+          {/* [FIX 3] "Enquiry Desk" → "Get In Touch" — clearer label */}
+          <Eyebrow>Get In Touch</Eyebrow>
           <SectionHeading>Connect With Us</SectionHeading>
-          <p style={{ ...body, fontSize: "17px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-6 max-w-md">
+          {/* [FIX 1] Body text: 16px / line-height 1.6 */}
+          <p style={{ ...body, fontSize: "16px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-6 max-w-md">
             Tell us about your team or your gear needs. Our team gets back to every enquiry within 24 hours.
           </p>
           <div style={{ background: OFF, borderLeft: `4px solid ${RED}` }} className="mt-10 p-8 space-y-5">
@@ -706,10 +731,11 @@ function Contact() {
             </label>
             <textarea rows={4} className={inputCls} placeholder="Tell us about your team or what you need..." />
           </div>
+          {/* [FIX 7] Submit CTA: .aleph-btn smooth 0.2s transition + translateY lift */}
           <button
             type="submit"
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "14px" }}
-            className="w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2 hover:opacity-90"
+            className="aleph-btn aleph-btn-darken-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
           >
             Submit Enquiry <ArrowRight size={16} />
           </button>
@@ -719,81 +745,112 @@ function Contact() {
   );
 }
 
-function Footer() {
+function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
+  const goTo = (r: Route) => {
+    setRoute(r);
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  };
+  const navItems: { label: string; route: Route }[] = [
+    { label: "Home", route: "home" },
+    { label: "Services", route: "services" },
+    { label: "Club Cricket", route: "club" },
+    { label: "Pro Gear", route: "services" },
+    { label: "Contact", route: "contact" },
+  ];
   return (
     <footer style={{ background: DARK, borderTop: `3px solid ${RED}` }} className="text-white relative">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}></div>
-      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10 relative z-10">
+      {/* [FIX 6] Footer restructured from 3-column → 4-column grid */}
+      <div className="max-w-7xl mx-auto px-6 py-16 grid sm:grid-cols-2 md:grid-cols-4 gap-10 relative z-10">
+
+        {/* COL 1 — Brand */}
         <Reveal>
-          <div className="flex items-center gap-3">
-            <LogoLockup hideTextOnMobile={false} scale={1.1} />
-          </div>
-          <p style={{ ...body, fontSize: "14px", lineHeight: 1.7 }} className="text-white/60 mt-5 max-w-xs">
+          {/* [FIX 6] Logo: 24px bottom margin for breathing room */}
+          <div className="mb-6"><LogoLockup hideTextOnMobile={false} scale={1.1} /></div>
+          {/* [FIX 6] Footer body: 13px / #999999 on dark bg */}
+          <p style={{ ...body, fontSize: "13px", lineHeight: 1.7, color: "#999999" }} className="max-w-xs">
             Vijayawada's one-stop sports gear destination — custom jerseys, cricket equipment & club cricket since 2018.
           </p>
         </Reveal>
+
+        {/* COL 2 — Navigate */}
         <Reveal delay={0.1}>
-          <div
-            style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED }}
-            className="uppercase mb-5"
-          >
-            Navigate
-          </div>
+          <div style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED }} className="uppercase mb-5">Navigate</div>
           <ul className="space-y-3">
-            {["Home", "Services", "Club Cricket", "Pro Gear", "Contact"].map((l) => (
-              <li key={l}>
-                <a
-                  href="#"
-                  style={{ ...condensed, fontWeight: 700, letterSpacing: "0.05em" }}
-                  className="text-white/80 hover:text-white uppercase transition-colors"
-                >
-                  {l}
+            {navItems.map((it) => (
+              <li key={it.label}>
+                <button onClick={() => goTo(it.route)} style={{ ...condensed, fontWeight: 700, letterSpacing: "0.05em", fontSize: "13px" }}
+                  className="aleph-btn text-white/70 hover:text-white uppercase transition-colors">{it.label}</button>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        {/* COL 3 — Reach Us */}
+        <Reveal delay={0.2}>
+          <div style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED }} className="uppercase mb-5">Reach Us</div>
+          {/* [FIX 6] Contact info: 13px / #999999 */}
+          <ul style={{ ...body, fontSize: "13px", lineHeight: 1.9, color: "#999999" }} className="space-y-1">
+            <li>+91 9491581580</li>
+            <li>alephsportsinfo@gmail.com</li>
+            <li>Labbipet, Vijayawada, AP</li>
+            <li className="pt-2">
+              <a href={CATALOGUE_URL} target="_blank" rel="noreferrer"
+                className="aleph-btn inline-flex items-center gap-2 text-white hover:text-[#25D366] transition-colors group">
+                <span className="w-7 h-7 inline-flex items-center justify-center transition-transform group-hover:scale-110" style={{ background: "#25D366" }}>
+                  <MessageSquare size={14} color="#fff" />
+                </span>
+                <span style={{ ...condensed, fontWeight: 800, letterSpacing: "0.05em", fontSize: "13px" }} className="uppercase">Browse Catalogue</span>
+              </a>
+            </li>
+          </ul>
+        </Reveal>
+
+        {/* [FIX 6] COL 4 — Connect (NEW social column) */}
+        <Reveal delay={0.3}>
+          <div style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED }} className="uppercase mb-5">Connect</div>
+          <ul className="space-y-4">
+            {[
+              { label: "Instagram", sub: "@Aleph_Sports", href: "https://instagram.com/Aleph_Sports" },
+              { label: "WhatsApp", sub: "+91 9491581580", href: "https://wa.me/919491581580" },
+              { label: "CricHeroes", sub: "Aleph Sports Club", href: "https://cricheroes.com/team-profile/5279275/aleph-sports-club/matches" },
+              { label: "Google Maps", sub: "Leave a Review", href: "https://www.google.com/maps/search/Aleph+Sports+Vijayawada" },
+            ].map(({ label, sub, href }) => (
+              <li key={label}>
+                <a href={href} target="_blank" rel="noreferrer" className="aleph-btn group flex flex-col">
+                  <span style={{ ...condensed, fontWeight: 800, fontSize: "13px", letterSpacing: "0.05em" }}
+                    className="uppercase text-white/80 group-hover:text-[#C8102E] transition-colors">{label}</span>
+                  {/* [FIX 6] Sub-label: 12px / #999 */}
+                  <span style={{ ...body, fontSize: "12px", color: "#999999" }}>{sub}</span>
                 </a>
               </li>
             ))}
           </ul>
         </Reveal>
-        <Reveal delay={0.2}>
-          <div
-            style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED }}
-            className="uppercase mb-5"
-          >
-            Reach Us
-          </div>
-          <ul style={{ ...body, fontSize: "14px", lineHeight: 1.9 }} className="text-white/70 space-y-1">
-            <li>+91 9491581580</li>
-            <li>alephsportsinfo@gmail.com</li>
-            <li>Labbipet, Vijayawada, AP</li>
-            <li>@Aleph_Sports</li>
-            <li className="pt-2">
-              <a
-                href={CATALOGUE_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-white hover:text-[#25D366] transition-colors group"
-              >
-                <span
-                  className="w-7 h-7 inline-flex items-center justify-center transition-transform group-hover:scale-110"
-                  style={{ background: "#25D366" }}
-                >
-                  <MessageSquare size={14} color="#fff" />
-                </span>
-                <span style={{ ...condensed, fontWeight: 800, letterSpacing: "0.05em" }} className="uppercase">
-                  Browse Full Catalogue
-                </span>
-              </a>
-            </li>
-          </ul>
-        </Reveal>
       </div>
       <div className="border-t border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* [FIX 6] Footer bottom bar: 13px / #999, Svestarn logo placed inline beside text */}
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
-            <span style={{ ...body, fontSize: "13px" }} className="text-white/50">
-              © 2026 Aleph Sports. | Powered By <a href="https://svestarn.com/" target="_blank" rel="noreferrer" className="text-white/80 hover:text-white underline transition-colors">Svestarn IT Solutions</a>
+            <span style={{ ...body, fontSize: "13px", color: "#999999" }}>
+              © 2026 Aleph Sports. | 
             </span>
-            <div className="hidden sm:block w-px h-4 bg-white/20"></div>
-            <LogoLockup hideTextOnMobile={true} scale={0.75} />
+            {/* [FIX 6] Powered By text + logo share the same link */}
+            <a
+              href="https://svestran.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="aleph-btn inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+            >
+              <img
+                src={svestarnLogo}
+                alt="Svestarn IT Solutions"
+                className="h-5 w-auto object-contain"
+              />
+              <span style={{ ...body, fontSize: "13px" }} className="underline">
+                Powered By Svestarn IT Solutions
+              </span>
+            </a>
           </div>
           <span
             style={{ ...condensed, fontWeight: 800, letterSpacing: "0.2em", fontSize: "13px", color: RED }}
@@ -833,7 +890,7 @@ export default function App() {
               <Contact />
             </>
           ) : route === "services" ? (
-            <ServicesPage />
+            <ServicesPage setRoute={setRoute} />
           ) : route === "club" ? (
             <ClubCricketPage />
           ) : (
@@ -841,7 +898,7 @@ export default function App() {
           )}
         </motion.div>
       </AnimatePresence>
-      <Footer />
+      <Footer setRoute={setRoute} />
     </div>
   );
 }
