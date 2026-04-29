@@ -29,7 +29,6 @@ import { Reveal } from "./components/reveal";
 import logoUrl from "../imports/aleph-logo.png";
 /* [FIX 6] Svestarn logo for footer 4th column / bottom bar */
 import svestarnLogo from "../imports/svestarn-logo.png";
-
 const CATALOGUE_URL = "https://wa.me/c/919491581580";
 const WHATSAPP_URL = "https://wa.me/919491581580";
 
@@ -133,7 +132,7 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
     { label: "HOME", route: "home" },
     { label: "SERVICES", route: "services" },
     { label: "CLUB CRICKET", route: "club" },
-    { label: "CONTACT", route: "contact" },
+    //{ label: "CONTACT", route: "contact" },
   ];
   const go = (r?: Route) => {
     if (r) {
@@ -240,7 +239,7 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
             "url('https://images.unsplash.com/photo-1593341646782-e0b495cff86d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.18,
+          opacity: 0.30,
         }}
       />
       <div
@@ -386,53 +385,113 @@ function WhyChooseUs() {
     },
   ];
   return (
-    <section className="bg-white py-24 md:py-32 relative overflow-hidden">
+    <section style={{ background: OFF }} className="pt-24 md:pt-32 pb-12 md:pb-16 relative overflow-hidden">
+      {/* soft red glow accent */}
       <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage:
-            "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.7%22 numOctaves=%222%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')",
-        }}
+        className="absolute -top-32 -right-32 w-[480px] h-[480px] pointer-events-none opacity-[0.10]"
+        style={{ background: `radial-gradient(circle, ${RED} 0%, transparent 70%)` }}
       />
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <Reveal className="max-w-3xl">
-          <Eyebrow>Why Choose Us</Eyebrow>
-          <SectionHeading>Why Athletes Choose Us</SectionHeading>
-          <p
-            style={{ ...body, fontSize: "16px", lineHeight: 1.6, color: "#6B6B6B" }}
-            className="mt-6"
-          >
-            Built for clubs, tournaments and athletes who refuse to compromise — here's what sets every Aleph order apart.
-          </p>
-        </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 mt-16" style={{ border: "1px solid #E3E1DD" }}>
-          {pillars.map(({ icon: Icon, title, desc }, i) => (
-            <Reveal key={title} delay={i * 0.1} className="h-full">
-              <div
-                className="group relative p-8 h-full bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10"
+      <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-14">
+        {/* LEFT — sticky intro */}
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-28">
+            <Reveal>
+              <Eyebrow>Why Choose Us</Eyebrow>
+              <h2
+                className="uppercase"
                 style={{
-                  borderTop: `4px solid ${RED}`,
-                  borderRight: i < pillars.length - 1 ? "1px solid #E3E1DD" : undefined,
+                  ...condensed,
+                  fontWeight: 900,
+                  fontSize: "clamp(40px, 5.4vw, 76px)",
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.01em",
+                  color: DARK,
                 }}
               >
-                <div
-                  style={{ ...condensed, fontWeight: 900, fontSize: "48px", lineHeight: 1, color: "#EFEDE8" }}
-                  className="absolute top-4 right-5 transition-colors duration-300 group-hover:text-[#F4D9DE]"
+                Built For
+                <span style={{ color: RED }} className="block">Athletes Who</span>
+                <span className="block">Mean Business.</span>
+              </h2>
+              <p style={{ ...body, fontSize: "16px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-8 max-w-md">
+                Four reasons clubs, captains and serious players keep coming back. No fluff — just gear, craft and
+                turnaround that holds up under match pressure.
+              </p>
+              <div className="mt-10 flex items-center gap-4">
+                <div className="h-px w-16" style={{ background: RED }} />
+                <span
+                  style={{ ...condensed, fontWeight: 700, letterSpacing: "0.25em", fontSize: "11px", color: "#6B6B6B" }}
+                  className="uppercase"
                 >
-                  0{i + 1}
-                </div>
-                <div className="w-14 h-14 flex items-center justify-center bg-[#F6F5F3] mb-6 transition-colors duration-300 group-hover:bg-[#C8102E]">
-                  <Icon className="text-[#C8102E] group-hover:text-white transition-colors duration-300" size={26} strokeWidth={1.8} />
-                </div>
-                <h3 style={{ ...body, fontWeight: 500, fontSize: "16px" }} className="uppercase">
-                  {title}
-                </h3>
-                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-3">
-                  {desc}
-                </p>
+                  The Aleph Standard
+                </span>
               </div>
             </Reveal>
-          ))}
+          </div>
+        </div>
+
+        {/* RIGHT — stacked rows */}
+        <div className="lg:col-span-7">
+          <div style={{ borderTop: "1px solid #E3E1DD" }}>
+            {pillars.map(({ icon: Icon, title, desc }, i) => (
+              <Reveal key={title} delay={i * 0.08}>
+                <div
+                  className="group relative py-8 md:py-10 px-2 md:px-4 grid grid-cols-[auto_1fr_auto] gap-6 md:gap-8 items-start cursor-default overflow-hidden"
+                  style={{ borderBottom: "1px solid #E3E1DD" }}
+                >
+                  {/* red sweep on hover */}
+                  <span
+                    className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out pointer-events-none"
+                    style={{
+                      background: `linear-gradient(90deg, rgba(200,16,46,0.08) 0%, transparent 100%)`,
+                    }}
+                  />
+                  {/* index */}
+                  <div
+                    style={{
+                      ...condensed,
+                      fontWeight: 900,
+                      fontSize: "clamp(40px, 5vw, 64px)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.02em",
+                      color: "#D9D6CF",
+                    }}
+                    className="group-hover:text-[#C8102E] transition-colors duration-300 relative z-10 w-[3ch]"
+                  >
+                    0{i + 1}
+                  </div>
+                  {/* content */}
+                  <div className="relative z-10 min-w-0">
+                    <h3
+                      style={{ ...condensed, fontWeight: 800, fontSize: "clamp(22px, 2.4vw, 30px)", letterSpacing: "0.02em", color: DARK }}
+                      className="uppercase transition-transform duration-300 group-hover:translate-x-2"
+                    >
+                      {title}
+                    </h3>
+                    <p
+                      style={{ ...body, fontSize: "15px", lineHeight: 1.7, color: "#6B6B6B" }}
+                      className="mt-3 max-w-xl"
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                  {/* icon */}
+                  <div
+                    className="relative z-10 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center transition-all duration-300 group-hover:rotate-[-6deg] group-hover:bg-white"
+                    style={{
+                      border: "1px solid #E3E1DD",
+                      background: "#fff",
+                    }}
+                  >
+                    <Icon
+                      className="text-[#0E0E0E] group-hover:text-[#C8102E] transition-colors duration-300"
+                      size={26}
+                      strokeWidth={1.6}
+                    />
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -449,8 +508,8 @@ function Services() {
     { icon: Zap, title: "Fast Turnaround", desc: "Express orders, on-time delivery and dedicated support for last-minute team needs." },
   ];
   return (
-    <section style={{ background: OFF }} className="py-24 md:py-32">
-      {/* [FIX 4] Background changed from bg-white → OFF to break consecutive white sections after LiveMatchWidget */}
+    <section className="bg-white pt-12 md:pt-16 pb-24 md:pb-32">
+      {/* Section 3 — white bg to differentiate from off-white WhyChooseUs above */}
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
           {/* [FIX 3] Eyebrow "What We Do" is clear — kept as-is */}
@@ -461,16 +520,15 @@ function Services() {
           {items.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 0.1} className="h-full">
               <div
-                className="group p-8 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10 bg-white"
+                className="group p-8 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10"
                 style={{
-                  /* [FIX 5] 4px top border in brand red on all service cards */
+                  background: OFF,
                   borderTop: `4px solid ${RED}`,
                   borderRight: i % 3 !== 2 ? "1px solid #E3E1DD" : undefined,
                   borderBottom: i < 3 ? "1px solid #E3E1DD" : undefined,
                 }}
               >
-                {/* [FIX 5] Internal padding increased to p-8 (32px) */}
-                <div className="w-12 h-12 flex items-center justify-center bg-[#F6F5F3] mb-6 group-hover:bg-[#C8102E] transition-colors duration-300">
+                <div className="w-12 h-12 flex items-center justify-center bg-white mb-6 group-hover:bg-[#C8102E] transition-colors duration-300">
                   <Icon className="text-[#C8102E] group-hover:text-white transition-colors duration-300" size={24} strokeWidth={1.8} />
                 </div>
                 {/* [FIX 5] Product/service name: font-size 16px, weight 500 (body font) */}
@@ -501,53 +559,108 @@ function Jerseys() {
     { icon: Ruler, t: "Team Fit Accuracy", d: "Custom sizing charts ensure every player gets a perfect fit." },
   ];
   return (
-    <section style={{ background: OFF }} className="py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-start">
-        <div className="relative">
-          <img
-            src="https://images.unsplash.com/photo-1761751844072-120967509161?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
-            alt="Cricket jersey"
-            className="w-full h-[560px] object-cover"
-          />
-          <div
-            style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "11px" }}
-            className="absolute bottom-5 left-5 text-white uppercase px-4 py-2"
-          >
-            ★ Match Ready
+    <section style={{ background: DARK }} className="relative py-24 md:py-32 overflow-hidden">
+      {/* full-bleed background image */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1761751844072-120967509161?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.22,
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(180deg, rgba(14,14,14,0.85) 0%, rgba(14,14,14,0.95) 100%)" }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.06] pointer-events-none mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')",
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Editorial header: massive headline + side meta */}
+        <Reveal className="grid md:grid-cols-12 gap-10 items-end">
+          <div className="md:col-span-8">
+            <Eyebrow>Custom Jerseys</Eyebrow>
+            <h2
+              className="uppercase"
+              style={{
+                ...condensed,
+                fontWeight: 900,
+                fontSize: "clamp(48px, 8vw, 120px)",
+                lineHeight: 0.85,
+                letterSpacing: "-0.02em",
+                color: "#fff",
+              }}
+            >
+              Wear Your
+              <span className="block" style={{ color: RED }}>Team's Colours.</span>
+            </h2>
           </div>
-        </div>
-        <div>
-          <Eyebrow>Custom Jerseys</Eyebrow>
-          <SectionHeading>Wear Your Team's Colours</SectionHeading>
-          {/* [FIX 1] Body text: 16px / line-height 1.6 */}
-          <p style={{ ...body, fontSize: "16px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-6">
-            From design concept to final stitch — we craft jerseys that look pro and feel pro. Sublimation, embroidery,
-            and performance fabrics built for the rigours of club and tournament cricket.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 mt-10" style={{ border: "1px solid #E3E1DD" }}>
-            {feats.map(({ icon: Icon, t, d }, i) => (
+          <div className="md:col-span-4">
+            <div className="h-px w-full mb-6" style={{ background: "rgba(255,255,255,0.18)" }} />
+            <p style={{ ...body, fontSize: "15px", lineHeight: 1.75 }} className="text-white/65">
+              From design concept to final stitch — sublimation, embroidery and performance fabrics built for the
+              rigours of club and tournament cricket.
+            </p>
+            <div
+              style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.18em", fontSize: "11px" }}
+              className="inline-block text-white uppercase px-4 py-2 mt-6"
+            >
+              ★ 7-Day Turnaround
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Horizontal pill-row of features (distinct from Services grid) */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(255,255,255,0.08)" }}>
+          {feats.map(({ icon: Icon, t, d }, i) => (
+            <Reveal key={t} delay={i * 0.08} className="h-full">
               <div
-                key={t}
-                className="p-6 bg-white relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:z-10"
-                style={{
-                  /* [FIX 5] 4px top border on jersey feature cards */
-                  borderTop: `4px solid ${RED}`,
-                  borderRight: i % 2 === 0 ? "1px solid #E3E1DD" : undefined,
-                  borderBottom: i < 2 ? "1px solid #E3E1DD" : undefined,
-                }}
+                className="group relative h-full p-7 transition-colors duration-300"
+                style={{ background: DARK }}
               >
-                <Icon style={{ color: RED }} size={28} strokeWidth={1.8} />
-                {/* [FIX 5] Card heading: 16px / weight 500 body font */}
-                <h4 style={{ ...body, fontWeight: 500, fontSize: "16px" }} className="uppercase mt-3">
+                {/* Big faded number behind */}
+                <div
+                  style={{
+                    ...condensed,
+                    fontWeight: 900,
+                    fontSize: "80px",
+                    lineHeight: 1,
+                    color: "rgba(255,255,255,0.04)",
+                  }}
+                  className="absolute top-3 right-4 select-none transition-colors duration-300 group-hover:text-[rgba(200,16,46,0.15)]"
+                >
+                  0{i + 1}
+                </div>
+                <Icon
+                  className="text-white/85 group-hover:text-[#C8102E] transition-colors duration-300"
+                  size={30}
+                  strokeWidth={1.6}
+                />
+                <h4
+                  style={{ ...condensed, fontWeight: 800, fontSize: "20px", letterSpacing: "0.04em" }}
+                  className="uppercase mt-6 text-white"
+                >
                   {t}
                 </h4>
-                {/* [FIX 1] Card body: 15px / 1.6 */}
-                <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-2">
+                <p style={{ ...body, fontSize: "14px", lineHeight: 1.65 }} className="text-white/55 mt-3">
                   {d}
                 </p>
+                {/* bottom red bar grows on hover */}
+                <span
+                  className="absolute left-0 bottom-0 h-[3px] w-0 group-hover:w-full transition-all duration-500"
+                  style={{ background: RED }}
+                />
               </div>
-            ))}
-          </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
