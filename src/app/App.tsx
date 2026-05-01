@@ -26,9 +26,10 @@ import { ClubCricketPage } from "./components/club-cricket-page";
 import { ContactPage } from "./components/contact-page";
 import { Reveal } from "./components/reveal";
 
-import logoUrl from "../imports/aleph-logo.png";
+import logoUrl from "../imports/Aleph.png";
 /* [FIX 6] Svestarn logo for footer 4th column / bottom bar */
 import svestarnLogo from "../imports/svestarn-logo.png";
+
 const CATALOGUE_URL = "https://wa.me/c/919491581580";
 const WHATSAPP_URL = "https://wa.me/919491581580";
 
@@ -70,45 +71,48 @@ function SectionHeading({ children, light = false }: { children: React.ReactNode
   );
 }
 
-function LogoLockup({ onClick, hideTextOnMobile = true, scale = 1 }: { onClick?: () => void; hideTextOnMobile?: boolean; scale?: number }) {
+function LogoLockup({
+  onClick,
+  hideTextOnMobile = true,
+  scale = 1,
+  theme = "dark",
+}: {
+  onClick?: () => void;
+  hideTextOnMobile?: boolean;
+  scale?: number;
+  theme?: "light" | "dark";
+}) {
   const Component = onClick ? "button" : "div";
+  const isLight = theme === "light";
+  const primary = isLight ? DARK : "#fff";
+  const subtle = isLight ? "rgba(14,14,14,0.55)" : "rgba(255,255,255,0.55)";
   return (
     <Component
       onClick={onClick}
       className="flex items-center gap-3 group text-left transition-opacity hover:opacity-90"
       style={{ transform: `scale(${scale})`, transformOrigin: "left center" }}
     >
-      <span
-        className="inline-flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_12px_rgba(200,16,46,0.5)]"
-        style={{
-          width: 40,
-          height: 40,
-          background: RED,
-          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
-        }}
-      >
-        <img
-          src={logoUrl}
-          alt="Aleph Sports"
-          className="object-contain transition-transform duration-300 group-hover:scale-110"
-          style={{ width: 28, height: 28, filter: "brightness(0) invert(1)" }}
-        />
-      </span>
+      <img
+        src={logoUrl}
+        alt="Aleph Sports"
+        className="object-contain block transition-transform duration-300 group-hover:scale-105"
+        style={{ height: 80, width: "auto", display: "block" }}
+      />
       <span className={`${hideTextOnMobile ? "hidden sm:flex" : "flex"} flex-col leading-none`}>
         <span
-          className="text-white uppercase transition-colors duration-300 group-hover:text-gray-200"
-          style={{ ...condensed, fontWeight: 800, letterSpacing: "0.18em", fontSize: "16px" }}
+          className="uppercase transition-colors duration-300"
+          style={{ ...condensed, fontWeight: 800, letterSpacing: "0.18em", fontSize: "16px", color: primary }}
         >
-          Aleph<span style={{ color: RED }} className="transition-colors duration-300 group-hover:brightness-110"> Sports</span>
+          Aleph<span style={{ color: RED }}> Sports</span>
         </span>
         <span
-          className="uppercase transition-colors duration-300 group-hover:text-white/70"
+          className="uppercase transition-colors duration-300"
           style={{
             ...condensed,
             fontWeight: 500,
             letterSpacing: "0.32em",
             fontSize: "9px",
-            color: "rgba(255,255,255,0.55)",
+            color: subtle,
             marginTop: 4,
           }}
         >
@@ -121,18 +125,11 @@ function LogoLockup({ onClick, hideTextOnMobile = true, scale = 1 }: { onClick?:
 
 function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => void }) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   const links: { label: string; route?: Route }[] = [
     { label: "HOME", route: "home" },
     { label: "SERVICES", route: "services" },
     { label: "CLUB CRICKET", route: "club" },
-    //{ label: "CONTACT", route: "contact" },
+    { label: "CONTACT", route: "contact" },
   ];
   const go = (r?: Route) => {
     if (r) {
@@ -141,20 +138,24 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
     }
     setOpen(false);
   };
+  const navBg = "rgba(14,14,14,0.94)";
+  const navBorder = "1px solid rgba(255,255,255,0.08)";
+  const linkIdle = "rgba(255,255,255,0.78)";
+  const iconColor = "#ffffff";
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300"
       style={{
-        background: scrolled ? "rgba(14,14,14,0.92)" : "rgba(14,14,14,0.55)",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0.0)",
-        boxShadow: scrolled ? "0 8px 24px rgba(0,0,0,0.25)" : "none",
+        background: navBg,
+        borderBottom: navBorder,
+        boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
       }}
     >
       <div
         className="max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300"
-        style={{ height: scrolled ? 60 : 76 }}
+        style={{ height: 72 }}
       >
-        <LogoLockup onClick={() => go("home")} />
+        <LogoLockup onClick={() => go("home")} theme="dark" />
         <div className="hidden md:flex items-center gap-10">
           {links.map((l) => {
             const isActive = l.route && l.route === route;
@@ -167,9 +168,9 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
                   fontWeight: 700,
                   letterSpacing: "0.15em",
                   fontSize: "13px",
-                  color: isActive ? RED : undefined,
+                  color: isActive ? RED : linkIdle,
                 }}
-                className={`relative uppercase transition-colors duration-200 ${isActive ? "" : "text-white/75 hover:text-white"}`}
+                className="relative uppercase transition-colors duration-200 hover:opacity-100"
               >
                 {l.label}
                 <span
@@ -191,30 +192,25 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
           >
             Contact Us
           </button>
-          <a
-            href={CATALOGUE_URL}
-            target="_blank"
-            rel="noreferrer"
-            title="Browse Our Catalogue"
-            aria-label="Browse Our Catalogue on WhatsApp"
-            style={{ background: "#25D366" }}
-            className="w-11 h-11 inline-flex items-center justify-center hover:opacity-90"
-          >
-            <MessageSquare size={18} color="#fff" />
-          </a>
         </div>
-        <button className="md:hidden text-white" onClick={() => setOpen(!open)}>
+        <button className="md:hidden" style={{ color: iconColor }} onClick={() => setOpen(!open)}>
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/10 px-6 py-4 flex flex-col gap-4" style={{ background: DARK }}>
+        <div
+          className="md:hidden px-6 py-4 flex flex-col gap-4"
+          style={{
+            background: DARK,
+            borderTop: "1px solid rgba(255,255,255,0.1)",
+          }}
+        >
           {links.map((l) => (
             <button
               key={l.label}
               onClick={() => go(l.route)}
-              style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em" }}
-              className="text-white uppercase text-left"
+              style={{ ...condensed, fontWeight: 700, letterSpacing: "0.15em", color: "#fff" }}
+              className="uppercase text-left"
             >
               {l.label}
             </button>
@@ -239,7 +235,7 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
             "url('https://images.unsplash.com/photo-1593341646782-e0b495cff86d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.30,
+          opacity: 0.18,
         }}
       />
       <div
@@ -276,6 +272,7 @@ function Hero({ setRoute }: { setRoute: (r: Route) => void }) {
               <button
                 onClick={() => {
                   setRoute("contact");
+                  window.history.replaceState(null, "", "/contact?subject=" + encodeURIComponent("General Enquiry"));
                   window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
                 }}
                 style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
@@ -516,11 +513,11 @@ function Services() {
           <Eyebrow>What We Do</Eyebrow>
           <SectionHeading>Our Services</SectionHeading>
         </Reveal>
-        <div className="grid grid-cols-1 md:grid-cols-3 mt-16" style={{ border: "1px solid #E3E1DD" }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-16 gap-8" style={{ border: "1px solid #E3E1DD" }}>
           {items.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 0.1} className="h-full">
               <div
-                className="group p-8 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10"
+                className="group p-10 h-full relative transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:z-10"
                 style={{
                   background: OFF,
                   borderTop: `4px solid ${RED}`,
@@ -983,7 +980,7 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
         {/* COL 1 — Brand */}
         <Reveal>
           {/* [FIX 6] Logo: 24px bottom margin for breathing room */}
-          <div className="mb-6"><LogoLockup hideTextOnMobile={false} scale={1.1} /></div>
+          <div className="mb-6"><LogoLockup hideTextOnMobile={false} scale={1} /></div>
           {/* [FIX 6] Footer body: 13px / #999999 on dark bg */}
           <p style={{ ...body, fontSize: "13px", lineHeight: 1.7, color: "#999999" }} className="max-w-xs">
             Vijayawada's one-stop sports gear destination — custom jerseys, cricket equipment & club cricket since 2018.
@@ -1102,7 +1099,7 @@ export default function App() {
           ) : route === "services" ? (
             <ServicesPage setRoute={setRoute} />
           ) : route === "club" ? (
-            <ClubCricketPage />
+            <ClubCricketPage setRoute={setRoute} />
           ) : (
             <ContactPage />
           )}

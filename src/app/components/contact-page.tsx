@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   Phone,
@@ -158,6 +158,19 @@ function QuickStrip() {
 }
 
 function MainContact() {
+  const [subject, setSubject] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const subjectParam = params.get("subject");
+    if (subjectParam) {
+      setSubject(subjectParam);
+      setTimeout(() => {
+        document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, []);
+
   const inputCls = "w-full bg-white border border-[#E3E1DD] px-4 py-3 outline-none focus:border-[#C8102E]";
   const lblStyle = { ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED };
   const lblCls = "uppercase block mb-2";
@@ -165,6 +178,7 @@ function MainContact() {
     <section className="bg-white py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-6">
         <form
+          id="enquiry-form"
           onSubmit={(e) => e.preventDefault()}
           style={{ background: OFF, borderTop: `3px solid ${RED}` }}
           className="p-8 md:p-12 space-y-5"
@@ -174,6 +188,21 @@ function MainContact() {
           <p style={{ ...body, fontSize: "16px", lineHeight: 1.7, color: "#6B6B6B" }}>
             Jersey orders, gear queries, bat knocking bookings, club cricket — whatever it is, we're listening.
           </p>
+          <div>
+            <label style={lblStyle} className={lblCls}>
+              Subject
+            </label>
+            <select className={inputCls} value={subject} onChange={(e) => setSubject(e.target.value)}>
+              <option value="">Select a subject</option>
+              <option value="Jersey Quote">Jersey Quote</option>
+              <option value="Cricket Gear">Cricket Gear</option>
+              <option value="Bat Knocking">Bat Knocking</option>
+              <option value="Product Repair">Product Repair</option>
+              <option value="Tournament Kit">Tournament Kit</option>
+              <option value="Club Cricket">Club Cricket</option>
+              <option value="General Enquiry">General Enquiry</option>
+            </select>
+          </div>
           <div>
             <label style={lblStyle} className={lblCls}>
               Full Name
@@ -193,20 +222,6 @@ function MainContact() {
               </label>
               <input type="email" className={inputCls} placeholder="you@email.com" />
             </div>
-          </div>
-          <div>
-            <label style={lblStyle} className={lblCls}>
-              Subject
-            </label>
-            <select className={inputCls}>
-              <option>Jersey Order</option>
-              <option>Cricket Gear</option>
-              <option>Bat Knocking</option>
-              <option>Product Repair</option>
-              <option>Tournament Kit</option>
-              <option>Club Cricket</option>
-              <option>General Enquiry</option>
-            </select>
           </div>
           <div>
             <label style={lblStyle} className={lblCls}>

@@ -86,7 +86,7 @@ function SectionWatermark({ n }: { n: string }) {
   );
 }
 
-function Hero() {
+function Hero({ onContact }: { onContact: (subject?: string) => void }) {
   return (
     <section className="relative overflow-hidden" style={{ background: DARK, minHeight: "60vh" }}>
       <div
@@ -95,30 +95,13 @@ function Hero() {
           backgroundImage: `url('${IMG_PITCH}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.15,
+          opacity: 0.30,
         }}
       />
       <div
         className="absolute inset-0"
         style={{ background: "linear-gradient(90deg, rgba(14,14,14,0.95) 30%, rgba(14,14,14,0.55))" }}
       />
-      <div
-        aria-hidden
-        className="absolute right-[-80px] top-1/2 -translate-y-1/2 hidden md:block pointer-events-none"
-      >
-        <div
-          className="rounded-full"
-          style={{
-            width: 460,
-            height: 460,
-            border: "2px solid rgba(255,255,255,0.15)",
-          }}
-        />
-        <div
-          className="absolute inset-12 rounded-full"
-          style={{ border: "1px dashed rgba(255,255,255,0.12)" }}
-        />
-      </div>
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-16 min-h-[60vh] flex flex-col justify-end">
         <Eyebrow light>★ Aleph Sports Club</Eyebrow>
         <h1
@@ -131,7 +114,7 @@ function Hero() {
           }}
           className="uppercase text-white max-w-4xl"
         >
-          Club Cricket Every Week
+          Club Cricket<br />Every Week
         </h1>
         <div
           style={{ ...condensed, fontWeight: 800, letterSpacing: "0.05em", color: RED, fontSize: "clamp(18px, 2vw, 26px)" }}
@@ -145,22 +128,11 @@ function Hero() {
         </p>
         <div className="flex flex-wrap gap-4 mt-10">
           <button
+            onClick={() => onContact("Club Cricket")}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             Join the Roster <ArrowRight size={16} />
-          </button>
-          <button
-            style={{
-              border: "1px solid rgba(255,255,255,0.4)",
-              ...condensed,
-              fontWeight: 800,
-              letterSpacing: "0.12em",
-              fontSize: "14px",
-            }}
-            className="aleph-btn aleph-btn-fill-red text-white uppercase px-7 py-4"
-          >
-            View Match Schedule
           </button>
         </div>
         <div
@@ -219,7 +191,7 @@ function StatsStrip() {
   );
 }
 
-function About() {
+function About({ onContact }: { onContact: (subject?: string) => void }) {
   return (
     <section className="bg-white py-24 md:py-32 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -239,6 +211,7 @@ function About() {
               matters. Because it does.
             </p>
             <button
+              onClick={() => onContact("Club Cricket")}
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
               className="aleph-btn aleph-btn-darken-red mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2"
             >
@@ -700,7 +673,7 @@ function RecentMatches() {
   );
 }
 
-function RosterForm() {
+function RosterForm({ onContact }: { onContact: (subject?: string) => void }) {
   const [exp, setExp] = useState("Beginner");
   const [crich, setCrich] = useState<"Yes" | "No">("No");
   const inputCls = "w-full bg-white border border-[#E3E1DD] px-4 py-3 outline-none focus:border-[#C8102E]";
@@ -892,6 +865,7 @@ function RosterForm() {
             </div>
             <button
               type="submit"
+              onClick={() => onContact("Club Cricket")}
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.15em", fontSize: "14px" }}
               className="aleph-btn aleph-btn-darken-red w-full text-white uppercase py-4 inline-flex items-center justify-center gap-2"
             >
@@ -932,7 +906,7 @@ function InstagramCTA() {
   );
 }
 
-function FinalBanner() {
+function FinalBanner({ onContact }: { onContact: (subject?: string) => void }) {
   return (
     <section style={{ background: DARK, borderTop: `3px solid ${RED}` }} className="py-20 md:py-28">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -954,12 +928,14 @@ function FinalBanner() {
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-10">
           <button
+            onClick={() => onContact("Club Cricket")}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             Join Now <ArrowRight size={16} />
           </button>
-          <button
+          <a
+            href="tel:+919491581580"
             style={{
               border: "1px solid rgba(255,255,255,0.6)",
               ...condensed,
@@ -970,26 +946,35 @@ function FinalBanner() {
             className="aleph-btn aleph-btn-fill-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
             <Phone size={14} /> Call Us: +91 9491581580
-          </button>
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-export function ClubCricketPage() {
+type Route = "home" | "services" | "club" | "contact";
+
+export function ClubCricketPage({ setRoute }: { setRoute?: (r: Route) => void }) {
+  const goContact = (subject?: string) => {
+    if (setRoute) {
+      setRoute("contact");
+      const url = subject ? `?subject=${encodeURIComponent(subject)}` : "";
+      window.history.replaceState(null, "", "/contact" + url);
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }
+  };
+
   return (
     <>
-      <Hero />
+      <Hero onContact={goContact} />
       <StatsStrip />
-      <About />
-      <Schedule />
+      <About onContact={goContact} />
       <HowItWorks />
       <Benefits />
-      <RecentMatches />
-      <RosterForm />
+      <RosterForm onContact={goContact} />
       <InstagramCTA />
-      <FinalBanner />
+      <FinalBanner onContact={goContact} />
     </>
   );
 }
