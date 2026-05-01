@@ -168,14 +168,7 @@ function PageHero() {
 }
 
 function TabsStrip({ active, onSelect }: { active: string; onSelect: (t: string) => void }) {
-  const tabs = [
-    "All",
-    "Customised Jerseys",
-    "Bat Knocking",
-    "Cricket Gear",
-    "Product Repairs",
-    "Tournament Kits",
-  ];
+  const tabs = ["All", "Customised Jerseys", "Cricket Gear", "Product Repairs", "Tournament Kits", "Bat Knocking"];
   return (
     <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E3E1DD] shadow-[0_1px_0_rgba(0,0,0,0.02)]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
@@ -247,7 +240,7 @@ function FeatureRow({ title, desc }: { title: string; desc: string }) {
   );
 }
 
-function Service01({ onCustomise, onContact }: { onCustomise: () => void; onContact: () => void }) {
+function Service01({ onCustomise, onContact }: { onCustomise: () => void; onContact: (subject?: string) => void }) {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const jerseyGallery = [
@@ -312,7 +305,7 @@ function Service01({ onCustomise, onContact }: { onCustomise: () => void; onCont
             <div className="mt-10 flex flex-wrap gap-3">
               {/* [FIX 7] Get a Jersey Quote CTA: .aleph-btn smooth transition */}
               <button
-                onClick={onContact}
+                onClick={() => onContact("Jersey Quote")}
                 style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
                 className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
               >
@@ -501,7 +494,7 @@ function Service01({ onCustomise, onContact }: { onCustomise: () => void; onCont
   );
 }
 
-function Service02({ onContact }: { onContact: () => void }) {
+function Service02({ onContact }: { onContact: (subject?: string) => void }) {
   const steps = [
     { n: "01", t: "Inspection", d: "We assess the bat's grade, moisture, and grain quality" },
     { n: "02", t: "Machine Knocking", d: "Systematic mallet work to compress surface fibres" },
@@ -584,7 +577,7 @@ function Service02({ onContact }: { onContact: () => void }) {
               </div>
             </div>
             <button
-              onClick={onContact}
+              onClick={() => onContact("Bat Knocking")}
               style={{
                 border: `1px solid ${RED}`,
                 ...condensed,
@@ -603,7 +596,7 @@ function Service02({ onContact }: { onContact: () => void }) {
   );
 }
 
-function Service03({ onContact }: { onContact: () => void }) {
+function Service03({ onContact }: { onContact: (subject?: string) => void }) {
   const cards = [
     { img: IMG_BAT, cat: "Willow", t: "English Willow Bats", d: "Grade A & B match bats, knocked-in and ready." },
     { img: IMG_HELMET, cat: "Safety", t: "Protective Pads & Helmets", d: "Certified pads and helmets for every age and grade." },
@@ -662,7 +655,7 @@ function Service03({ onContact }: { onContact: () => void }) {
                 </p>
                 {/* [FIX 7] Enquire link: .aleph-btn smooth transition */}
                 <button
-                  onClick={onContact}
+                  onClick={() => onContact("Cricket Gear")}
                   style={{ ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "13px", color: RED }}
                   className="aleph-btn uppercase mt-5 inline-flex items-center gap-2 border-b border-current"
                 >
@@ -702,7 +695,7 @@ function Service03({ onContact }: { onContact: () => void }) {
   );
 }
 
-function Service04({ onContact }: { onContact: () => void }) {
+function Service04({ onContact }: { onContact: (subject?: string) => void }) {
   const repairs = [
     "Batting Glove Repair",
     "Pad Stitching & Foam Replacement",
@@ -760,7 +753,7 @@ function Service04({ onContact }: { onContact: () => void }) {
               ))}
             </div>
             <button
-              onClick={onContact}
+              onClick={() => onContact("Product Repair")}
               style={{
                 background: RED,
                 ...condensed,
@@ -779,7 +772,7 @@ function Service04({ onContact }: { onContact: () => void }) {
   );
 }
 
-function Service05({ onContact }: { onContact: () => void }) {
+function Service05({ onContact }: { onContact: (subject?: string) => void }) {
   const panels = [
     { t: "Full Kit Bundle", d: "Jersey + shorts + socks + cap, coordinated and branded" },
     { t: "Custom Numbering", d: "Every player gets the right size and number, first time" },
@@ -842,7 +835,7 @@ function Service05({ onContact }: { onContact: () => void }) {
           </div>
         </div>
         <button
-          onClick={onContact}
+          onClick={() => onContact("Tournament Kit")}
           style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
           className="mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
         >
@@ -884,7 +877,7 @@ function TrustBar() {
   );
 }
 
-function FinalCTA({ onContact }: { onContact: () => void }) {
+function FinalCTA({ onContact }: { onContact: (subject?: string) => void }) {
   return (
     <section className="bg-white py-24 md:py-32">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -899,7 +892,7 @@ function FinalCTA({ onContact }: { onContact: () => void }) {
         <div className="flex flex-wrap gap-4 justify-center mt-10">
           {/* [FIX 7] Start Enquiry CTA: .aleph-btn transition */}
           <button
-            onClick={onContact}
+            onClick={() => onContact("General Enquiry")}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
@@ -938,9 +931,11 @@ export function ServicesPage({ setRoute }: { setRoute?: (r: Route) => void }) {
   const openConfig = () => setConfigOpen(true);
   const isProgrammaticScroll = useRef(false);
 
-  const goContact = () => {
+  const goContact = (subject?: string) => {
     if (setRoute) {
       setRoute("contact");
+      const url = subject ? `?subject=${encodeURIComponent(subject)}` : "";
+      window.history.replaceState(null, "", "/contact" + url);
       window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     }
   };
