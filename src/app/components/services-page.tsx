@@ -61,7 +61,7 @@ const IMG_REPAIR_2 =
 const IMG_REPAIR_3 =
   "https://images.unsplash.com/photo-1579178937321-3ac1437a28ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_REPAIR_4 =
-  "https://images.unsplash.com/photo-1540345701062-3676274135b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/glove-repair.png?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 
 function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
@@ -305,6 +305,7 @@ function Service01({ onCustomise, onContact }: { onCustomise: () => void; onCont
               >
                 Get a Jersey Quote <ArrowRight size={16} />
               </button>
+              {/*
               <button
                 onClick={onCustomise}
                 style={{
@@ -318,6 +319,7 @@ function Service01({ onCustomise, onContact }: { onCustomise: () => void; onCont
               >
                 <Settings2 size={16} /> Customise Your Jersey <ArrowRight size={16} />
               </button>
+              */}
             </div>
             <a
               href={CATALOGUE_URL}
@@ -908,7 +910,7 @@ function FinalCTA({ onContact }: { onContact: (subject?: string) => void }) {
               letterSpacing: "0.12em",
               fontSize: "14px",
             }}
-            className="aleph-btn aleph-btn-fill-red uppercase px-7 py-4 inline-flex items-center gap-2 text-[#0E0E0E] hover:!text-white"
+            className="aleph-btn uppercase px-7 py-4 inline-flex items-center gap-2 text-[#0E0E0E] hover:text-[#C8102E] hover:border-[#C8102E] hover:bg-[#FFF5F7]"
           >
             <Phone size={14} /> Call +91 9491581580
           </a>

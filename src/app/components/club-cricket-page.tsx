@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ClipboardList,
@@ -86,7 +86,7 @@ function SectionWatermark({ n }: { n: string }) {
   );
 }
 
-function Hero({ onContact }: { onContact: (subject?: string) => void }) {
+function Hero({ onJoinRoster }: { onJoinRoster: () => void }) {
   return (
     <section className="relative overflow-hidden" style={{ background: DARK, minHeight: "60vh" }}>
       <div
@@ -128,7 +128,7 @@ function Hero({ onContact }: { onContact: (subject?: string) => void }) {
         </p>
         <div className="flex flex-wrap gap-4 mt-10">
           <button
-            onClick={() => onContact("Club Cricket")}
+            onClick={onJoinRoster}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="aleph-btn aleph-btn-darken-red text-white uppercase px-7 py-4 inline-flex items-center gap-2"
           >
@@ -191,7 +191,7 @@ function StatsStrip() {
   );
 }
 
-function About({ onContact }: { onContact: (subject?: string) => void }) {
+function About({ onJoinRoster }: { onJoinRoster: () => void }) {
   return (
     <section className="bg-white py-24 md:py-32 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative">
@@ -211,7 +211,7 @@ function About({ onContact }: { onContact: (subject?: string) => void }) {
               matters. Because it does.
             </p>
             <button
-              onClick={() => onContact("Club Cricket")}
+              onClick={onJoinRoster}
               style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
               className="aleph-btn aleph-btn-darken-red mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2"
             >
@@ -681,7 +681,7 @@ function RosterForm({ onContact }: { onContact: (subject?: string) => void }) {
   const labelStyle = { ...condensed, fontWeight: 700, letterSpacing: "0.15em", fontSize: "11px", color: RED };
 
   return (
-    <section style={{ background: OFF }} className="py-24 md:py-32 relative overflow-hidden">
+    <section id="club-roster-form" style={{ background: OFF }} className="py-24 md:py-32 relative overflow-hidden scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 relative">
         <SectionWatermark n="06" />
         <div className="grid md:grid-cols-2 gap-6 relative">
@@ -892,12 +892,15 @@ function InstagramCTA() {
         <p style={{ ...body, fontSize: "17px", lineHeight: 1.7, color: "#6B6B6B" }} className="mt-6">
           Match schedules, team announcements, and live score updates every week on Instagram.
         </p>
-        <button
+        <a
+          href="https://www.instagram.com/aleph__sports?igsh=MTNoYWViMWZzMHVtcw=="
+          target="_blank"
+          rel="noreferrer"
           style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
           className="aleph-btn aleph-btn-darken-red mt-10 text-white uppercase px-7 py-4 inline-flex items-center gap-2"
         >
           Follow @Aleph_Sports <ArrowRight size={16} />
-        </button>
+        </a>
         <div style={{ ...body, fontSize: "14px", color: "#6B6B6B" }} className="mt-5">
           Also follow us on CricHeroes to track live scorecards
         </div>
@@ -956,6 +959,27 @@ function FinalBanner({ onContact }: { onContact: (subject?: string) => void }) {
 type Route = "home" | "services" | "club" | "contact";
 
 export function ClubCricketPage({ setRoute }: { setRoute?: (r: Route) => void }) {
+  const scrollToRosterForm = () => {
+    window.history.replaceState(null, "", "/club#club-roster-form");
+    document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  useEffect(() => {
+    if (window.location.hash !== "#club-roster-form") return;
+
+    const scrollToRosterForm = () => {
+      document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const frame = window.requestAnimationFrame(scrollToRosterForm);
+    const timeout = window.setTimeout(scrollToRosterForm, 450);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
   const goContact = (subject?: string) => {
     if (setRoute) {
       setRoute("contact");
@@ -967,9 +991,9 @@ export function ClubCricketPage({ setRoute }: { setRoute?: (r: Route) => void })
 
   return (
     <>
-      <Hero onContact={goContact} />
+      <Hero onJoinRoster={scrollToRosterForm} />
       <StatsStrip />
-      <About onContact={goContact} />
+      <About onJoinRoster={scrollToRosterForm} />
       <HowItWorks />
       <Benefits />
       <RosterForm onContact={goContact} />

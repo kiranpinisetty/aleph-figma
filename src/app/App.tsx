@@ -133,6 +133,8 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
   const go = (r?: Route) => {
     if (r) {
       setRoute(r);
+      const path = r === "home" ? "/" : `/${r}`;
+      window.history.replaceState(null, "", path);
       window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     }
     setOpen(false);
@@ -669,7 +671,6 @@ function ClubBanner({ setRoute }: { setRoute: (r: Route) => void }) {
       className="relative py-24 md:py-32 overflow-hidden"
       style={{
         background: RED,
-        backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 12px, transparent 12px 28px)",
       }}
     >
       <div className="absolute inset-0 mix-blend-overlay opacity-20 pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}></div>
@@ -696,7 +697,7 @@ function ClubBanner({ setRoute }: { setRoute: (r: Route) => void }) {
           <button
             onClick={() => {
               setRoute("club");
-              window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+              window.history.replaceState(null, "", "/club#club-roster-form");
             }}
             style={{
               border: "2px solid rgba(255,255,255,0.9)",
@@ -795,21 +796,21 @@ function ProGear() {
 
 function Testimonials() {
   const reviews = [
-    { q: "Got our entire team kit in under a week. Stitching, fit and print quality blew us away.", n: "Rohit Varma", c: "Vijayawada Strikers CC", i: "RV" },
-    { q: "Their bat knocking service made my new willow feel like an extension of my arms. Pure craft.", n: "Karthik Reddy", c: "Krishna District XI", i: "KR" },
-    { q: "From jerseys to gear bags, Aleph delivered every detail for our tournament. True one-stop shop.", n: "Sandeep Naidu", c: "Indus Cricket Club", i: "SN" },
+    { q: "I got some cricket items from Rohit, who sells and repairs gear, and I'm really happy with everything. He offers high-quality bats, gloves, pads, and custom cricket jerseys, all at very reasonable prices.", n: "Nalluri Sai Sagar", i: "NS" },
+    { q: "The best all-in-one store for cricket and other sports in and around Vijayawada. I thoroughly enjoyed my visit and purchase at Aleph. Rohit has great insight into the wide range of stock he carries. The quality of the bats is simply magnificent and top notch.", n: "Prashant Anumula", i: "PA" },
+    { q: "I recently bought a bat, ball, and a customized jersey with my name and number from Aleph Sports. The quality of all the items is top notch, and the jersey came out exactly how I wanted. The staff was helpful and the service was great.", n: "Mahabaleshwar Naik", i: "MN" },
   ];
   return (
     <section style={{ background: OFF }} className="py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div>
+          <div className="max-w-3xl">
             {/* [FIX 3] "Social Proof" → "Happy Clients" — clearer, less jargon */}
             <Eyebrow>Happy Clients</Eyebrow>
             <SectionHeading>Trusted By Local Teams</SectionHeading>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 md:justify-end">
+            <div className="flex shrink-0">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} size={20} fill="#F5B400" stroke="#F5B400" className="drop-shadow-sm" />
               ))}
@@ -831,20 +832,23 @@ function Testimonials() {
               {/* [FIX 5] 4px top border on testimonial dark cards */}
               <div
                 style={{ background: DARK, borderTop: `4px solid ${RED}` }}
-                className="p-8 h-full hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-300"
+                className="p-8 h-full flex flex-col hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-300"
               >
                 {/* [FIX 1] Dark-bg testimonial text: 15px / 1.6 */}
-                <p style={{ ...body, fontStyle: "italic", fontSize: "15px", lineHeight: 1.6 }} className="text-white/80">
+                <p
+                  style={{ ...body, fontStyle: "italic", fontSize: "15px", lineHeight: 1.7, textAlign: "justify" }}
+                  className="text-white/80 flex-1"
+                >
                   "{r.q}"
                 </p>
-                <div className="flex items-center gap-4 mt-8">
+                <div className="flex items-center gap-4 mt-8 pt-6 border-t border-white/10">
                   <div
-                    className="w-12 h-12 flex items-center justify-center"
+                    className="w-12 h-12 shrink-0 flex items-center justify-center"
                     style={{ background: RED, ...condensed, fontWeight: 800, color: "#fff" }}
                   >
                     {r.i}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div style={{ ...condensed, fontWeight: 800, letterSpacing: "0.05em" }} className="text-white uppercase">
                       {r.n}
                     </div>
