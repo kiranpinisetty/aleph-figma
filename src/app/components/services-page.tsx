@@ -30,29 +30,29 @@ const condensed = { fontFamily: "'Barlow Condensed', sans-serif" };
 const body = { fontFamily: "'Barlow', sans-serif" };
 
 const IMG_JERSEY =
-  "https://images.unsplash.com/photo-1707108471246-fb36c4d78d37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+  "src/imports/jersey1.png";
 const IMG_JERSEY_2 =
-  "https://images.unsplash.com/photo-1580831772345-687cfb1841f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/jersey2.png";
 const IMG_JERSEY_3 =
-  "https://images.unsplash.com/photo-1768492263368-46acc6804f14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/jersey3.png";
 const IMG_JERSEY_4 =
-  "https://images.unsplash.com/photo-1774600958486-9ca9b2fdea10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/jersey4.png";
 const IMG_JERSEY_5 =
-  "https://images.unsplash.com/photo-1659081450592-99fc16c56b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/jersey5.png";
 const IMG_BAT =
-  "https://images.unsplash.com/photo-1603722039047-bc9997bfa963?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+  "src/imports/cricketBats.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 const IMG_GLOVE_1 =
-  "https://images.unsplash.com/photo-1593766730583-db5945f17581?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+"src/imports/battingGlove.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_GLOVE_2 =
   "https://images.unsplash.com/photo-1593341646647-75b32930e4a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_HELMET =
-  "https://images.unsplash.com/photo-1652107999818-f972a785b1ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/cricketHelmet.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 const IMG_GEAR =
-  "https://images.unsplash.com/photo-1659081435441-6f3197d89dc9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/wicketKeeping.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 const IMG_GEAR_2 =
-  "https://images.unsplash.com/photo-1659081476962-df97acad7f1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "src/imports/cricketKit.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_ACTION =
-  "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+  "src/imports/Balls.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
 
 const IMG_REPAIR_1 =
   "https://images.unsplash.com/photo-1743342398244-c8c5a307d290?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
@@ -98,7 +98,7 @@ function BigHeading({ children, light = false }: { children: ReactNode; light?: 
   );
 }
 
-function PageHero() {
+function PageHero({ onContact }: { onContact: (subject?: string) => void }) {
   return (
     <section
       className="relative overflow-hidden"
@@ -131,6 +131,19 @@ function PageHero() {
             >
               Everything your team needs — jerseys, gear, repairs, and more. All under one roof in Vijayawada.
             </p>
+            <button
+              onClick={() => onContact("General Enquiry")}
+              style={{
+                background: RED,
+                ...condensed,
+                fontWeight: 800,
+                letterSpacing: "0.12em",
+                fontSize: "14px",
+              }}
+              className="mt-8 text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90 transition-opacity"
+            >
+              Start Enquiry <ArrowRight size={16} />
+            </button>
           </div>
         </div>
         <div
@@ -144,31 +157,12 @@ function PageHero() {
           </span>
         </div>
       </div>
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none select-none hidden md:block"
-        aria-hidden
-      >
-        <span
-          style={{
-            ...condensed,
-            fontWeight: 900,
-            fontSize: "260px",
-            lineHeight: 0.8,
-            color: "transparent",
-            WebkitTextStroke: "1px rgba(255,255,255,0.1)",
-            letterSpacing: "-0.02em",
-          }}
-          className="uppercase"
-        >
-          Services
-        </span>
-      </div>
     </section>
   );
 }
 
 function TabsStrip({ active, onSelect }: { active: string; onSelect: (t: string) => void }) {
-  const tabs = ["All", "Customised Jerseys", "Cricket Gear", "Product Repairs", "Tournament Kits", "Bat Knocking"];
+  const tabs = ["All","Customised Jerseys","Bat Knocking", "Cricket Gear", "Product Repairs", "Tournament Kits"];
   return (
     <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E3E1DD] shadow-[0_1px_0_rgba(0,0,0,0.02)]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex gap-3 overflow-x-auto scrollbar-hide">
@@ -251,8 +245,8 @@ function Service01({ onCustomise, onContact }: { onCustomise: () => void; onCont
     },
     {
       img: IMG_JERSEY_2,
-      label: "Classic Whites",
-      caption: "Traditional match-day whites",
+      label: "Classic Black",
+      caption: "Traditional match-day ",
     },
     {
       img: IMG_JERSEY_3,
@@ -653,17 +647,24 @@ function Service03({ onContact }: { onContact: (subject?: string) => void }) {
                 <p style={{ ...body, fontSize: "15px", lineHeight: 1.6, color: "#6B6B6B" }} className="mt-2">
                   {c.d}
                 </p>
-                {/* [FIX 7] Enquire link: .aleph-btn smooth transition */}
-                <button
-                  onClick={() => onContact("Cricket Gear")}
-                  style={{ ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "13px", color: RED }}
-                  className="aleph-btn uppercase mt-5 inline-flex items-center gap-2 border-b border-current"
-                >
-                  Enquire Now <ArrowRight size={14} />
-                </button>
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => onContact("Cricket Gear")}
+            style={{
+              background: RED,
+              ...condensed,
+              fontWeight: 800,
+              letterSpacing: "0.12em",
+              fontSize: "14px",
+            }}
+            className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90 transition-opacity"
+          >
+            Enquire Now <ArrowRight size={16} />
+          </button>
         </div>
         <div
           style={{ background: DARK, borderLeft: `4px solid ${RED}` }}
@@ -999,7 +1000,7 @@ export function ServicesPage({ setRoute }: { setRoute?: (r: Route) => void }) {
   return (
     <>
       <div id="services-top" />
-      <PageHero />
+      <PageHero onContact={goContact} />
       <TabsStrip active={active} onSelect={onTabSelect} />
       <Service01 onCustomise={openConfig} onContact={goContact} />
       <Service02 onContact={goContact} />
