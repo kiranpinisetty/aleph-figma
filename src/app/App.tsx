@@ -129,7 +129,6 @@ function Navbar({ route, setRoute }: { route: Route; setRoute: (r: Route) => voi
     { label: "HOME", route: "home" },
     { label: "SERVICES", route: "services" },
     { label: "CLUB CRICKET", route: "club" },
-    { label: "CONTACT", route: "contact" },
   ];
   const go = (r?: Route) => {
     if (r) {
@@ -1007,7 +1006,7 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
           <ul style={{ ...body, fontSize: "13px", lineHeight: 1.9, color: "#999999" }} className="space-y-1">
             <li>+91 9491581580</li>
             <li>alephsportsinfo@gmail.com</li>
-            <li>Labbipet, Vijayawada, AP</li>
+            <li>29-19-87/3 Bishop Azaraiah School Compound, Labbipet, Vijayawada, Andhra Pradesh 520010</li>
             <li className="pt-2">
               <a href={CATALOGUE_URL} target="_blank" rel="noreferrer"
                 className="aleph-btn inline-flex items-center gap-2 text-white hover:text-[#25D366] transition-colors group">
@@ -1028,7 +1027,7 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
               { label: "Instagram", sub: "@Aleph_Sports", href: "https://instagram.com/Aleph_Sports" },
               { label: "WhatsApp", sub: "+91 9491581580", href: "https://wa.me/919491581580" },
               { label: "CricHeroes", sub: "Aleph Sports Club", href: "https://cricheroes.com/team-profile/5279275/aleph-sports-club/matches" },
-              { label: "Google Maps", sub: "Leave a Review", href: "https://www.google.com/maps/search/Aleph+Sports+Vijayawada" },
+              { label: "Google ", sub: "Leave a Review", href: "https://www.google.com/maps/search/Aleph+Sports+Vijayawada" },
             ].map(({ label, sub, href }) => (
               <li key={label}>
                 <a href={href} target="_blank" rel="noreferrer" className="aleph-btn group flex flex-col">
@@ -1044,27 +1043,32 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
       </div>
       <div className="border-t border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-          {/* [FIX 6] Footer bottom bar: 13px / #999, Svestarn logo placed inline beside text */}
-          <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
-            <span style={{ ...body, fontSize: "13px", color: "#999999" }}>
-              © 2026 Aleph Sports. | Powered By{" "}
-              <a href="https://svestarn.com/" target="_blank" rel="noreferrer" className="text-white/70 hover:text-white underline transition-colors">
-                Svestarn IT Solutions
-              </a>
-            </span>
-            {/* [FIX 6] Svestarn logo beside "Powered By" text */}
-            <img
-              src={svestarnLogo}
-              alt="Svestarn IT Solutions"
-              className="h-6 w-auto opacity-90 hover:opacity-100 transition-opacity object-contain"
-            />
-          </div>
-          <span
-            style={{ ...condensed, fontWeight: 800, letterSpacing: "0.2em", fontSize: "13px", color: RED }}
-            className="uppercase"
-          >
-            ★ The Beginning.
+          <span style={{ ...body, fontSize: "13px", color: "#999999" }}>
+            © 2026 Aleph Sports.
           </span>
+          <div className="flex items-center gap-3">
+            <span style={{ ...body, fontSize: "14px", color: "#999999" }}>
+              Powered by
+            </span>
+            <a
+              href="https://svestarn.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 group transition-opacity hover:opacity-90"
+            >
+              <img
+                src={svestarnLogo}
+                alt="Svestarn IT Solutions"
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <span
+                style={{ ...condensed, fontWeight: 800, letterSpacing: "0.1em", fontSize: "16px", color: RED }}
+                className="uppercase"
+              >
+                Svestarn IT Solutions
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
