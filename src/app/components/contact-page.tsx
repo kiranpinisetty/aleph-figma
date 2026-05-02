@@ -181,7 +181,7 @@ function MainContact() {
           id="enquiry-form"
           onSubmit={(e) => e.preventDefault()}
           style={{ background: OFF, borderTop: `3px solid ${RED}` }}
-          className="p-8 md:p-12 space-y-5"
+          className="p-8 md:p-12 space-y-5 scroll-mt-24"
         >
           <Eyebrow>Send An Enquiry</Eyebrow>
           <BigHeading>Let's Talk</BigHeading>
@@ -605,42 +605,39 @@ function FloatingButtons() {
         target="_blank"
         rel="noreferrer"
         title="View Catalogue"
-        className="group inline-flex items-center gap-3 pl-2 pr-2 py-2 hover:pr-5 transition-all hover:scale-105"
+        className="group inline-flex h-14 w-14 items-center justify-center overflow-hidden rounded-full transition-all duration-300 hover:w-[190px] hover:scale-105 hover:px-5"
         style={{
           background: RED,
           boxShadow: "0 12px 32px rgba(200,16,46,0.45)",
           ...condensed,
           fontWeight: 800,
-          letterSpacing: "0.15em",
-          fontSize: "13px",
+          letterSpacing: "0.12em",
+          fontSize: "12px",
         }}
       >
-        <span className="w-12 h-12 flex items-center justify-center rounded-full bg-white/15">
-          <ShoppingBag size={20} color="#fff" />
-        </span>
-        <span className="text-white uppercase max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[200px] transition-all duration-300">
-          View Catalogue →
+        <ShoppingBag className="shrink-0" size={22} color="#fff" />
+        <span className="ml-0 max-w-0 overflow-hidden whitespace-nowrap text-white uppercase opacity-0 transition-all duration-300 group-hover:ml-3 group-hover:max-w-[130px] group-hover:opacity-100">
+          View Catalogue
         </span>
       </a>
       <a
         href={`https://wa.me/${PHONE_RAW.replace("+", "")}`}
         target="_blank"
         rel="noreferrer"
-        className="group relative inline-flex items-center gap-3 pl-2 pr-2 py-2 hover:pr-5 transition-all hover:scale-105"
+        title="Chat with us"
+        className="aleph-pulse-ring group relative inline-flex h-14 w-14 items-center justify-center overflow-hidden rounded-full transition-all duration-300 hover:w-[170px] hover:scale-105 hover:px-5"
         style={{
-          background: RED,
-          boxShadow: "0 12px 32px rgba(200,16,46,0.45)",
+          background: "#25D366",
+          boxShadow: "0 12px 32px rgba(37,211,102,0.35)",
           ...condensed,
           fontWeight: 800,
-          letterSpacing: "0.15em",
-          fontSize: "13px",
+          letterSpacing: "0.12em",
+          fontSize: "12px",
         }}
       >
-        <span className="aleph-pulse-ring relative w-12 h-12 flex items-center justify-center rounded-full" style={{ background: "#25D366" }}>
-          <MessageCircle size={22} color="#fff" />
-        </span>
-        <span className="text-white uppercase max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[200px] transition-all duration-300">
-          Chat with us →
+        <MessageCircle className="shrink-0" size={24} color="#fff" />
+        <span className="ml-0 max-w-0 overflow-hidden whitespace-nowrap text-white uppercase opacity-0 transition-all duration-300 group-hover:ml-3 group-hover:max-w-[110px] group-hover:opacity-100">
+          Chat With Us
         </span>
       </a>
     </motion.div>
@@ -668,6 +665,7 @@ function FinalBanner() {
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-10">
           <button
+            onClick={() => document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
           >
