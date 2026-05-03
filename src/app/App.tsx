@@ -796,9 +796,9 @@ function ProGear() {
 
 function Testimonials() {
   const reviews = [
-    { q: "I got some cricket items from Rohit, who sells and repairs gear, and I'm really happy with everything. He offers high-quality bats, gloves, pads, and custom cricket jerseys, all at very reasonable prices.", n: "Nalluri Sai Sagar", i: "NS" },
-    { q: "The best all-in-one store for cricket and other sports in and around Vijayawada. I thoroughly enjoyed my visit and purchase at Aleph. Rohit has great insight into the wide range of stock he carries. The quality of the bats is simply magnificent and top notch.", n: "Prashant Anumula", i: "PA" },
-    { q: "I recently bought a bat, ball, and a customized jersey with my name and number from Aleph Sports. The quality of all the items is top notch, and the jersey came out exactly how I wanted. The staff was helpful and the service was great.", n: "Mahabaleshwar Naik", i: "MN" },
+    { q: "I got some cricket items from Rohit, who sells and repairs gear, and I'm really happy with everything. He offers high-quality bats, gloves, pads, and custom cricket jerseys, all at very reasonable prices.", n: "Nalluri Sai Sagar", i: "NS", c: "Cricket Gear & Jerseys" },
+    { q: "The best all-in-one store for cricket and other sports in and around Vijayawada. I thoroughly enjoyed my visit and purchase at Aleph. Rohit has great insight into the wide range of stock he carries. The quality of the bats is simply magnificent and top notch.", n: "Prashant Anumula", i: "PA", c: "Cricket Equipment" },
+    { q: "I recently bought a bat, ball, and a customized jersey with my name and number from Aleph Sports. The quality of all the items is top notch, and the jersey came out exactly how I wanted. The staff was helpful and the service was great.", n: "Mahabaleshwar Naik", i: "MN", c: "Custom Jersey Order" },
   ];
   return (
     <section style={{ background: OFF }} className="py-24 md:py-32">
@@ -1055,7 +1055,7 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
               Powered by
             </span>
             <a
-              href="https://svestarn.com/"
+              href="https://svestran.com/"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-3 group transition-opacity hover:opacity-90"

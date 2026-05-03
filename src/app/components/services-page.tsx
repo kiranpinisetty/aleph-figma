@@ -29,6 +29,12 @@ const OFF = "#F6F5F3";
 const condensed = { fontFamily: "'Barlow Condensed', sans-serif" };
 const body = { fontFamily: "'Barlow', sans-serif" };
 
+function scrollElementToCenter(el: HTMLElement, behavior: ScrollBehavior = "smooth") {
+  const rect = el.getBoundingClientRect();
+  const top = window.scrollY + rect.top - (window.innerHeight - rect.height) / 2;
+  window.scrollTo({ top: Math.max(0, top), behavior });
+}
+
 const IMG_JERSEY =
   "src/imports/jersey1.png";
 const IMG_JERSEY_2 =
@@ -964,8 +970,11 @@ export function ServicesPage({ setRoute }: { setRoute?: (r: Route) => void }) {
     const el = document.getElementById(id);
     if (el) {
       isProgrammaticScroll.current = true;
-      const top = el.getBoundingClientRect().top + window.scrollY - 120;
-      window.scrollTo({ top, behavior: "smooth" });
+      if (t === "All") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        scrollElementToCenter(el);
+      }
       window.setTimeout(() => {
         isProgrammaticScroll.current = false;
       }, 800);

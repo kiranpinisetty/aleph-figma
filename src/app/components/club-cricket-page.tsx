@@ -961,14 +961,14 @@ type Route = "home" | "services" | "club" | "contact";
 export function ClubCricketPage({ setRoute }: { setRoute?: (r: Route) => void }) {
   const scrollToRosterForm = () => {
     window.history.replaceState(null, "", "/club#club-roster-form");
-    document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   useEffect(() => {
     if (window.location.hash !== "#club-roster-form") return;
 
     const scrollToRosterForm = () => {
-      document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("club-roster-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
     };
 
     const frame = window.requestAnimationFrame(scrollToRosterForm);
