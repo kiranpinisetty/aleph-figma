@@ -166,7 +166,7 @@ function MainContact() {
     if (subjectParam) {
       setSubject(subjectParam);
       setTimeout(() => {
-        document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
     }
   }, []);
@@ -665,7 +665,7 @@ function FinalBanner() {
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-10">
           <button
-            onClick={() => document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            onClick={() => document.getElementById("enquiry-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
             style={{ background: RED, ...condensed, fontWeight: 800, letterSpacing: "0.12em", fontSize: "14px" }}
             className="text-white uppercase px-7 py-4 inline-flex items-center gap-2 hover:opacity-90"
           >
