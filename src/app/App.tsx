@@ -744,7 +744,7 @@ function ProGear() {
                   Premium · Grade A
                 </div>
                 <h3 style={{ ...condensed, fontWeight: 900, fontSize: "44px", lineHeight: 0.9 }} className="uppercase text-white drop-shadow-md">
-                  English Willow
+                   Willow Bats
                 </h3>
                 <p style={{ ...body, fontSize: "15px", lineHeight: 1.7 }} className="text-white/80 mt-3 max-w-md">
                   Hand-selected, hand-pressed bats with knocking-in service included. Ready for your first innings.
@@ -879,10 +879,10 @@ function Contact() {
           </p>
           <div style={{ background: OFF, borderLeft: `4px solid ${RED}` }} className="mt-10 p-8 space-y-5">
             {[
-              { Icon: Phone, l: "Phone", v: "+91 98765 43210" },
-              { Icon: Mail, l: "Email", v: "hello@alephsports.in" },
-              { Icon: MapPin, l: "Address", v: "MG Road, Vijayawada, AP 520001" },
-              { Icon: Instagram, l: "Instagram", v: "@alephsports" },
+              { Icon: Phone, l: "Phone", v: "+91 9491581580" },
+              { Icon: Mail, l: "Email", v: "alephsportsinfo@gmail.com" },
+              { Icon: MapPin, l: "Address", v: "Labbipet, Vijayawada, AP 520010" },
+              { Icon: Instagram, l: "Instagram", v: "@aleph_sports" },
             ].map(({ Icon, l, v }) => (
               <div key={l} className="flex items-start gap-4">
                 <Icon style={{ color: RED }} size={20} />
@@ -971,7 +971,7 @@ function Footer({ setRoute }: { setRoute: (r: Route) => void }) {
     { label: "Home", route: "home" },
     { label: "Services", route: "services" },
     { label: "Club Cricket", route: "club" },
-    { label: "Pro Gear", route: "services" },
+    //{ label: "Pro Gear", route: "services" },
     { label: "Contact", route: "contact" },
   ];
   return (
