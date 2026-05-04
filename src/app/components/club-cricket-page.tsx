@@ -712,7 +712,7 @@ function RosterForm({ onContact }: { onContact: (subject?: string) => void }) {
                 { Icon: Phone, l: "WhatsApp", v: "+91 9491581580" },
                 { Icon: Instagram, l: "Instagram", v: "@Aleph_Sports" },
                 { Icon: Globe, l: "CricHeroes", v: "Aleph Sports Club" },
-                { Icon: MapPin, l: "Location", v: "Vijayawada, Andhra Pradesh" },
+                { Icon: MapPin, l: "Location", v: "Labbipet, Vijayawada" },
               ].map(({ Icon, l, v }) => (
                 <div key={l} className="flex items-start gap-4">
                   <Icon style={{ color: RED }} size={20} />
